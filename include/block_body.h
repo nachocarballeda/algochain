@@ -3,15 +3,18 @@
 
 #include <cstdlib>
 
+using namespace std;
+
 class BlockBody
 {
     public:
         BlockBody();
         size_t getTxnCount(void);
+        void setTxnCount(size_t txn_count);
         //addTxn
         //getTxn
     private:
-        std::size_t txn_count;
+        size_t _txn_count;
         //array of class txns
 };
 

@@ -2,7 +2,9 @@
 
 #include <iostream>
 
+using namespace std;
+
 Block::Block()
 {
-    std::cout << "Block Constructor was called." << std::endl;
+    cout << "Block Constructor was called." << endl;
 }

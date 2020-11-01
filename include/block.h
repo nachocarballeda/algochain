@@ -9,8 +9,8 @@ class Block
     public:
         Block();
     private:
-        BlockHeader header;
-        BlockBody body;
+        BlockHeader _header;
+        BlockBody _body;
 };
 
 #endif /** _BLOCK_H_ */

@@ -2,12 +2,14 @@
 
 #include <iostream>
 
+using namespace std;
+
 BlockHeader::BlockHeader(void)
 {
-    std::cout << "Header Constructor was called." << std::endl;
+    cout << "Header Constructor was called." << endl;
 }
 
 char* BlockHeader::getPrevBlock(void)
 {
-    return prev_block;
+    return _prev_block;
 }

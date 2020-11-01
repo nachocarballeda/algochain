@@ -3,6 +3,8 @@
 
 #include <cstdlib>
 
+using namespace std;
+
 class BlockHeader
 {
     public:
@@ -12,10 +14,10 @@ class BlockHeader
         //set & getBits
         //set & getNonce
     private:
-        char prev_block[32];
-        char txns_hash[32];
-        std::size_t bits;
-        std::size_t nonce;
+        char _prev_block[32];
+        char _txns_hash[32];
+        size_t _bits;
+        size_t _nonce;
 };
 
 #endif /** _BLOCK_HEADER_H_ */

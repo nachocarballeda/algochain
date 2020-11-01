@@ -1,18 +1,15 @@
-#ifndef _BLOCK_HEADER_H_
-#define _BLOCK_HEADER_H_
+#ifndef _HEADER_H_
+#define _HEADER_H_
 
 #include <cstdlib>
 
 using namespace std;
 
-class BlockHeader
+class Header
 {
     public:
-        BlockHeader();
+        Header();
         char* getPrevBlock(void);
-        //getTxnsHash
-        //set & getBits
-        //set & getNonce
     private:
         char _prev_block[32];
         char _txns_hash[32];
@@ -20,4 +17,4 @@ class BlockHeader
         size_t _nonce;
 };
 
-#endif /** _BLOCK_HEADER_H_ */
+#endif /** _HEADER_H_ */

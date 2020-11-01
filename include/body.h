@@ -1,21 +1,22 @@
-#ifndef _BLOCK_BODY_H_
-#define _BLOCK_BODY_H_
+#ifndef _BODY_H_
+#define _BODY_H_
 
 #include <cstdlib>
+#include <vector>
+
+#include "../include/txns.h"
 
 using namespace std;
 
-class BlockBody
+class Body
 {
     public:
-        BlockBody();
+        Body();
         size_t getTxnCount(void);
         void setTxnCount(size_t txn_count);
-        //addTxn
-        //getTxn
     private:
         size_t _txn_count;
-        //array of class txns
+        vector<Txns> _txns;
 };
 
-#endif /** _BLOCK_BODY_H_ */
+#endif /** _BODY_H_ */

@@ -2,8 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
-#include "include/block_body.h"
-#include "include/block_header.h"
+
+#include "include/body.h"
+#include "include/header.h"
 #include "include/block.h"
 #include "include/sha256.h"
 #include "include/cmdline.h"

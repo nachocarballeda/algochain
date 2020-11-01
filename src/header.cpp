@@ -1,15 +1,15 @@
-#include "../include/block_header.h"
+#include "../include/header.h"
 
 #include <iostream>
 
 using namespace std;
 
-BlockHeader::BlockHeader(void)
+Header::Header(void)
 {
     cout << "Header Constructor was called." << endl;
 }
 
-char* BlockHeader::getPrevBlock(void)
+char* Header::getPrevBlock(void)
 {
     return _prev_block;
 }

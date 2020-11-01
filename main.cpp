@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include "include/block_body.h"
+#include "include/block_header.h"
+#include "include/block.h"
 #include "include/sha256.h"
 #include "include/cmdline.h"
 
@@ -35,6 +38,7 @@ static void opt_input(string const &arg)
 
 int main(int argc, char *argv[])
 {
+    Block block0;
 	cmdline cmdl(options);
 	
 	cmdl.parse(argc, argv);

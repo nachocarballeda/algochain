@@ -15,7 +15,7 @@ class Header
         size_t _nonce;
     public:
         Header();                               //Constructor simple.
-        Header(size_t &);                       //Constructor con bits.
+        Header(size_t &);                       //Constructor con _bits.
         Header(const Header &);                 //Constructor copia.
         ~Header();                              //Destructor.
         string getPrevBlock(void) const;        //Devuelve el _prev_block

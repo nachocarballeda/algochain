@@ -2,19 +2,33 @@
 #define _HEADER_H_
 
 #include <cstdlib>
+#include <string>
 
 using namespace std;
 
 class Header
 {
-    public:
-        Header();
-        char* getPrevBlock(void);
     private:
-        char _prev_block[32];
-        char _txns_hash[32];
+        string _prev_block = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        string _txns_hash;
         size_t _bits;
-        size_t _nonce;
+        size_t _nonce = 0;
+    public:
+        Header();                                   //Constructor simple.
+        Header(size_t &);                           //Constructor con _bits.
+        Header(const Header &);                     //Constructor copia.
+        Header const &operator=(Header const &);    //Operador '='.
+        ~Header();                                  //Destructor.
+
+        string getPrevBlock() const;                //Devuelve _prev_block.
+        size_t getBits() const;                     //Devuelve _bits.
+        size_t getNonce() const;                    //Devuelve _nonce.
+        string getTxnsHash() const;                 //Devuelve _txns_hash.
+        void setBits(size_t const &);               //Establece _bits.
+        void setTxnsHash(string const &);           //Establece _txns_hash.
+
+        friend ostream &operator<<(ostream &, const Header &); //Operador '<<'.
+    
 };
 
 #endif /** _HEADER_H_ */

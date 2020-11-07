@@ -82,7 +82,7 @@ Block::Block(string filepath)
         }
 
         _body.addTxn(newTxn);
-
+        txns_file.close();
         cout << "Transactions loaded" << endl;
     }
 }
@@ -98,6 +98,7 @@ void Block::writeToFile(string filepath)
     ofstream file(filepath);
     file << _header.cat() << endl
          << _body.cat();
+    file.close();
 }
 
 void Block::setHeader(const Header &h)

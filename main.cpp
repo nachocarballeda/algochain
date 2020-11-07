@@ -106,7 +106,8 @@ int main(int argc, char *argv[])
 	Block b2;
 
 	b2.setHeader(h5);
-	b2.proofOfWork();
-	//Falta probar la dificultad del proof
+	b2.proofOfWork(); //Tiene comentarios de prueba.
+	//El proofofwork se debe llamar desde la funcion updateTxnsHash, pero como
+	//faltan las funciones del body se pone aqui como prueba.
 
 }

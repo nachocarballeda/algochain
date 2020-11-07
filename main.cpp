@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	const string filepath = "txns.txt";
 	Block block0(filepath);
 	block0.print();
+	block0.writeToFile("block.txt");
 
 	/*cmdline cmdl(options);
 	

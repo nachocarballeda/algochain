@@ -89,7 +89,15 @@ Block::Block(string filepath)
 
 void Block::print()
 {
-    _body.print();
+    cout << _header.cat() << endl;
+    cout << _body.cat();
+}
+
+void Block::writeToFile(string filepath)
+{
+    ofstream file(filepath);
+    file << _header.cat() << endl
+         << _body.cat();
 }
 
 void Block::setHeader(const Header &h)

@@ -30,6 +30,7 @@ public:
     void proofOfWork();
 
     void loadTxns(const string);
+    void writeToFile(const string);
     void print();
 
     friend std::ostream &operator<<(std::ostream &, const Block &);

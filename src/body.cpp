@@ -61,15 +61,14 @@ string Body::generateTxnsHash()
     return sha256(concatTxns);
 }
 
-void Body::print()
+string Body::cat()
 {
     string concatTxns = "";
+    concatTxns.append(to_string(_txn_count));
+    concatTxns.append("\n");
     for (size_t i = 0; i < _txn_count; i++)
     {
-        concatTxns.append("\n+++++ TX ");
-        concatTxns.append(to_string(_txn_count));
-        concatTxns.append("+++++\n");
-        concatTxns.append("<<<INPUTS>>>\n");
+        // concatTxns.append(to_string(_txn_count));
         concatTxns.append(to_string(_txns[i].getNTxIn()));
         concatTxns.append("\n");
         for (size_t j = 0; j < _txns[i].getNTxIn(); ++j)
@@ -81,7 +80,6 @@ void Body::print()
             concatTxns.append((_txns[i].getInputs())[j].getOutpointTxId());
             concatTxns.append("\n");
         }
-        concatTxns.append("<<<OUTPUTS>>>\n");
         concatTxns.append(to_string(_txns[i].getNTxOut()));
         concatTxns.append("\n");
 
@@ -95,7 +93,5 @@ void Body::print()
         }
     }
 
-    cout << "============  BODY  ============" << endl
-         << "TRANSACTIONS COUNT: " << _txn_count << endl
-         << "TRANSACCIONES: " << concatTxns << endl;
+    return concatTxns;
 }

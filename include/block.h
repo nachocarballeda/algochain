@@ -11,15 +11,28 @@
 
 class Block
 {
-public:
-    Block();
-    Block(const string);
-    void loadTxns(const string);
-    void print();
-
 private:
     Header _header;
     Body _body;
+
+public:
+    Block();
+    Block(const Header &, const Body &);
+    Block(const Block &);
+    Block(const string);
+    ~Block();
+
+    void setHeader(const Header &);
+    void setBody(const Body &);
+    Header const &getHeader() const;
+    Body const &getBody() const;
+    void updateTxnsHash();
+    void proofOfWork();
+
+    void loadTxns(const string);
+    void print();
+
+    friend std::ostream &operator<<(std::ostream &, const Block &);
 };
 
 #endif /** _BLOCK_H_ */

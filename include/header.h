@@ -20,12 +20,14 @@ class Header
         Header const &operator=(Header const &);    //Operador '='.
         ~Header();                                  //Destructor.
 
-        string getPrevBlock() const;                //Devuelve _prev_block.
-        size_t getBits() const;                     //Devuelve _bits.
-        size_t getNonce() const;                    //Devuelve _nonce.
-        string getTxnsHash() const;                 //Devuelve _txns_hash.
+        string const &getPrevBlock() const;         //Devuelve _prev_block.
+        size_t const &getBits() const;              //Devuelve _bits.
+        size_t const &getNonce() const;             //Devuelve _nonce.
+        string const &getTxnsHash() const;          //Devuelve _txns_hash.
         void setBits(size_t const &);               //Establece _bits.
         void setTxnsHash(string const &);           //Establece _txns_hash.
+        void incrementNonce();                      //Aumenta el valor del _nonce.
+        string cat();                               //Concatena el contenido del Header.
 
         friend ostream &operator<<(ostream &, const Header &); //Operador '<<'.
     

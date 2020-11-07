@@ -37,21 +37,21 @@ Header::~Header()
 {
 }
 
-string Header::getPrevBlock() const
+string const & Header::getPrevBlock() const
 {
     return _prev_block;
 }
 
-size_t Header::getBits() const
+size_t const & Header::getBits() const
 {
     return _bits;
 }
 
-size_t Header::getNonce() const{
+size_t const & Header::getNonce() const{
     return _nonce;
 }
 
-string Header::getTxnsHash() const{
+string const & Header::getTxnsHash() const{
     return _txns_hash;
 }
 
@@ -62,6 +62,27 @@ void Header::setBits(size_t const &b){
 
 void Header::setTxnsHash(string const &s){
     _txns_hash = s;
+}
+
+void Header::incrementNonce(){
+    _nonce++;
+}
+
+string Header::cat(){
+
+    string s;
+
+    s += _prev_block;
+    s += '\n';
+    s += _txns_hash;
+    s += '\n';
+    s += to_string(_bits);
+    s += '\n';
+    s += to_string(_nonce);
+    s += '\n';
+
+    return s;
+
 }
 
 ostream &operator<<(ostream &os, const Header &h){

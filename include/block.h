@@ -27,13 +27,16 @@ public:
     Header const &getHeader() const;
     Body const &getBody() const;
     void updateTxnsHash();
-    void proofOfWork();
+    
 
     void loadTxns(const string);
     void writeToFile(const string);
     void print();
 
     friend std::ostream &operator<<(std::ostream &, const Block &);
+
+private:
+    void proofOfWork();
 };
 
 #endif /** _BLOCK_H_ */

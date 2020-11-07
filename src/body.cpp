@@ -28,7 +28,7 @@ void Body::addTxn(Txn newTxn)
     _txn_count = _txn_count + 1;
 }
 
-string Body::generateTxnsHash()
+/*string Body::generateTxnsHash()
 {
     string concatTxns = "";
     cout << _txns[0].getNTxIn() << endl;
@@ -59,7 +59,7 @@ string Body::generateTxnsHash()
     }
     cout << "TXNS HASH:" << sha256(concatTxns) << endl;
     return sha256(concatTxns);
-}
+}*/
 
 string Body::cat()
 {

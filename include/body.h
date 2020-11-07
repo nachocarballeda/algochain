@@ -17,7 +17,7 @@ public:
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);
     string cat();
-    string generateTxnsHash();
+    string generateTxnsHash(); //No hace falta.
 
 private:
     size_t _txn_count;

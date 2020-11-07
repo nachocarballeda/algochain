@@ -9,21 +9,18 @@ Output::Output()
     cout << "Outputs default constructor was called." << endl;
 }
 
-Output::Output(vector<char> &a, size_t v)
+Output::Output(string a, size_t v)
 {
-    if (a.size() == ADDR_MAX_SIZE)
-    {
-        addr = a;
-        value = v;
-    };
+    addr = a;
+    value = v;
 }
 
-const vector<char> &Output::get_addr()
+string Output::getAddr()
 {
     return addr;
 }
 
-const size_t &Output::get_value()
+size_t Output::getValue()
 {
     return value;
 }

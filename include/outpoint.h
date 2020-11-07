@@ -3,20 +3,19 @@
 
 #include <cstdlib>
 #include <vector>
-
+#include <string>
 using namespace std;
 
 class Outpoint
 {
 public:
     Outpoint();
-    Outpoint(vector<char> &, size_t);
-    const vector<char> &get_tx_id();
-    const size_t &get_idx();
+    Outpoint(string, size_t);
+    string getTxId();
+    size_t getIdx();
 
 private:
-    static const size_t TX_ID_MAX_SIZE = 32;
-    vector<char> tx_id;
+    string tx_id;
     size_t idx;
 };
 

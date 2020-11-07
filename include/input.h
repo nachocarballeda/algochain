@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <vector>
+#include <string>
 
 #include "../include/outpoint.h"
 
@@ -12,14 +13,13 @@ class Input
 {
 public:
     Input();
-    Input(vector<char> &, vector<char> &, size_t);
-    const vector<char> &get_addr();
-    const vector<char> &get_outpoint_tx_id();
-    const size_t &get_outpoint_idx();
+    Input(string, string, size_t);
+    string getAddr();
+    string getOutpointTxId();
+    size_t getOutpointIdx();
 
 private:
-    static const size_t ADDR_MAX_SIZE = 32;
-    vector<char> addr;
+    string addr;
     Outpoint _outpoint;
 };
 

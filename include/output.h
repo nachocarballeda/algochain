@@ -3,19 +3,19 @@
 
 #include <cstdlib>
 #include <vector>
+#include <string>
 using namespace std;
 
 class Output
 {
 public:
     Output();
-    Output(vector<char> &, size_t);
-    const vector<char> &get_addr();
-    const size_t &get_value();
+    Output(string, size_t);
+    string getAddr();
+    size_t getValue();
 
 private:
-    static const size_t ADDR_MAX_SIZE = 32;
-    vector<char> addr;
+    string addr;
     size_t value;
 };
 

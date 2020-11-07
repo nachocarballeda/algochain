@@ -3,10 +3,11 @@
 #include <sstream>
 #include <cstdlib>
 
-//#include "include/body.h"
+#include "include/body.h"
 #include "include/header.h"
-//#include "include/block.h"
-//#include "include/sha256.h"
+#include "include/block.h"
+#include "include/sha256.h"
+#include <string>
 //#include "include/cmdline.h"
 
 #define MSG_ERR_OPEN_FILE "Error al abrir el archivo "
@@ -39,38 +40,41 @@ static void opt_input(string const &arg)
 
 int main(int argc, char *argv[])
 {
-    /*Block block0;
-	cmdline cmdl(options);
+	const string filepath = "txns.txt";
+	Block block0(filepath);
+	block0.print();
+
+	/*cmdline cmdl(options);
 	
 	cmdl.parse(argc, argv);
 
+	
     string output = sha256(input);
     cout << "input: " << input << endl;
     cout << "output: " << output << endl;*/
-	
-	size_t b = 5;
-	Header h(b);
 
-	cout << h << endl;
+	// size_t b = 5;
+	// Header h(b);
 
-	Header h1;
-	cout << h1 << endl;
+	// cout << h << endl;
 
-	Header h2(h);
-	cout  << h2 << endl;
+	// Header h1;
+	// cout << h1 << endl;
 
-	h2.setBits(10);
-	cout  << h2 << endl;
+	// Header h2(h);
+	// cout  << h2 << endl;
 
-	cout << h2.getBits() << endl; 
-	cout << h2.getNonce() << endl; 
-	cout << h2.getPrevBlock() << endl; 
+	// h2.setBits(10);
+	// cout  << h2 << endl;
 
-	Header h3 = h2;
+	// cout << h2.getBits() << endl;
+	// cout << h2.getNonce() << endl;
+	// cout << h2.getPrevBlock() << endl;
 
-	cout << h3 << endl;
+	// Header h3 = h2;
 
-	h3.setTxnsHash("Hola");
-	cout << h3.getTxnsHash() << endl;
+	// cout << h3 << endl;
 
+	// h3.setTxnsHash("Hola");
+	// cout << h3.getTxnsHash() << endl;
 }

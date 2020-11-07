@@ -15,10 +15,12 @@ class Txn
 public:
     Txn(); //default
     Txn(size_t, vector<Input>, size_t, vector<Output>);
-    const size_t &get_n_tx_in();
-    const vector<Input> &get_inputs();
-    const size_t &get_n_tx_out();
-    const vector<Output> &get_outputs();
+    size_t getNTxIn();
+    vector<Input> getInputs();
+    size_t getNTxOut();
+    vector<Output> getOutputs();
+    void addInput(Input);
+    void addOutput(Output);
 
 private:
     size_t _n_tx_in;

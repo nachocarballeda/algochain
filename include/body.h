@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../include/txn.h"
+#include "../include/sha256.h"
 
 using namespace std;
 
@@ -14,6 +15,9 @@ public:
     Body();
     size_t getTxnCount(void);
     void setTxnCount(size_t txn_count);
+    void addTxn(Txn);
+    void print();
+    string generateTxnsHash();
 
 private:
     size_t _txn_count;

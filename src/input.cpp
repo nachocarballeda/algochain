@@ -9,25 +9,22 @@ Input::Input()
     cout << "Inputs Constructor was called." << endl;
 }
 
-Input::Input(vector<char> &a, vector<char> &tx_id, size_t idx) : _outpoint(tx_id, idx)
+Input::Input(string a, string tx_id, size_t idx) : _outpoint(tx_id, idx)
 {
-    if (a.size() == ADDR_MAX_SIZE)
-    {
-        addr = a;
-    };
+    addr = a;
 }
 
-const vector<char> &Input::get_addr()
+string Input::getAddr()
 {
     return addr;
 }
 
-const vector<char> &Input::get_outpoint_tx_id()
+string Input::getOutpointTxId()
 {
-    return _outpoint.get_tx_id();
+    return _outpoint.getTxId();
 }
 
-const size_t &Input::get_outpoint_idx()
+size_t Input::getOutpointIdx()
 {
-    return _outpoint.get_idx();
+    return _outpoint.getIdx();
 }

@@ -184,7 +184,7 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
-        if (n_tx_out != n_tx_in || outputStream.fail())
+        if (n_tx_out < n_tx_in || outputStream.fail())
         {
             cout << "INVALID N TX OUT" << endl;
             return;
@@ -254,14 +254,13 @@ Body const &Block::getBody() const
 
 void Block::updateTxnsHash()
 {
-    
+
     string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
 
-    cout << _header.getTxnsHash() << endl; //Prueba
+    // cout << _header.getTxnsHash() << endl; //Prueba
 
     proofOfWork();
-
 }
 
 void Block::proofOfWork()
@@ -304,7 +303,6 @@ void Block::proofOfWork()
                 c = (h[j] - 48);
             }
 
-
             size_t i = 0;
 
             /*
@@ -340,7 +338,6 @@ void Block::proofOfWork()
                 flag = false;
                 break; //Salgo del ciclo.
             }
-
         }
     }
 }

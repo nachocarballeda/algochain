@@ -64,17 +64,13 @@ static void _opt_set_input(string const &arg)
 
 int main(int argc, char *argv[])
 {
-	const string filepath = "txns.txt";
-	Block block0;
-	block0.loadTxn(filepath);
-	cout << block0 << endl;
-	block0.writeToFile("block.txt");
-
-	/*cmdline cmdl(options);
-	
 	cmdline cmdl(options);
 	cmdl.parse(argc, argv);
 
 	Block block0(g_input);
-	block0.writeToFile(g_output);*/
+
+	block0.updateTxnsHash();
+
+	cout << block0 << endl;
+	block0.writeToFile(g_output);
 }

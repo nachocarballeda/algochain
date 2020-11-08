@@ -19,8 +19,8 @@ static void _opt_set_output(string const &arg);
 static void _opt_set_difficulty(string const &arg);
 
 static option_t options[] = {
-    {1, "d", "difficulty", "-", _opt_set_difficulty, OPT_MANDATORY},
-    {1, "o", "output", "-", _opt_set_output, OPT_DEFAULT},
+    {1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
+    {1, "o", "output", "block.txt", _opt_set_output, OPT_DEFAULT},
 	{1, "i", "input", "-", _opt_set_input, OPT_DEFAULT},
 	{0, }
 };
@@ -39,7 +39,8 @@ static void _opt_set_difficulty(string const &arg)
 static void _opt_set_output(string const &arg)
 {
     std::stringstream out(arg);
-    out >> g_output;
+    if(out.good())
+        out >> g_output;
 }
 
 static void _opt_set_input(string const &arg)

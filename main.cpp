@@ -2,41 +2,65 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <string>
 
 #include "include/body.h"
 #include "include/header.h"
 #include "include/block.h"
 #include "include/sha256.h"
-#include <string>
-//#include "include/cmdline.h"
+#include "include/cmdline.h"
 
 #define MSG_ERR_OPEN_FILE "Error al abrir el archivo "
 
 using namespace std;
 
-/*static void opt_input(string const &arg);
- 
+static void _opt_set_input(string const &arg);
+static void _opt_set_output(string const &arg);
+static void _opt_set_difficulty(string const &arg);
+
 static option_t options[] = {
-	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
-	{0, }
-};
+	{1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
+	{1, "o", "output", "block.txt", _opt_set_output, OPT_DEFAULT},
+	{1, "i", "input", "-", _opt_set_input, OPT_DEFAULT},
+	{
+		0,
+	}};
 
-static string input;
+static string g_input;
+static string g_output;
+static size_t g_difficulty;
 
-static void opt_input(string const &arg)
+static void _opt_set_difficulty(string const &arg)
 {
-	if(arg == "-") {
-		cin >> input;
+	char *pEnd;
+	g_difficulty = strtol(arg.c_str(), &pEnd, 10);
+	cout << "Difficulty is " << g_difficulty << endl;
+}
+
+static void _opt_set_output(string const &arg)
+{
+	std::stringstream out(arg);
+	if (out.good())
+		out >> g_output;
+}
+
+static void _opt_set_input(string const &arg)
+{
+	if (arg == "-")
+	{
+		cin >> g_input;
 	}
-	else{
+	else
+	{
 		std::stringstream in(arg);
-	    if(!in.good()){
-		    cerr << MSG_ERR_OPEN_FILE << arg << endl;
-		    exit(1);
-	    }
-		in >> input;
+		if (!in.good())
+		{
+			cerr << MSG_ERR_OPEN_FILE << arg << endl;
+			exit(1);
+		}
+		in >> g_input;
 	}
-}*/
+}
 
 int main(int argc, char *argv[])
 {
@@ -48,67 +72,9 @@ int main(int argc, char *argv[])
 
 	/*cmdline cmdl(options);
 	
+	cmdline cmdl(options);
 	cmdl.parse(argc, argv);
 
-	
-    string output = sha256(input);
-    cout << "input: " << input << endl;
-    cout << "output: " << output << endl;*/
-
-	// cout << "PRUEBAS HEADER" << endl;
-
-	// size_t b = 5;
-	// Header h(b);
-
-	// // size_t b = 5;
-	// // Header h(b);
-
-	// // cout << h << endl;
-
-	// // Header h1;
-	// // cout << h1 << endl;
-
-	// // Header h2(h);
-	// // cout  << h2 << endl;
-
-	// // h2.setBits(10);
-	// // cout  << h2 << endl;
-
-	// Header h3 = h2;
-	// h3.incrementNonce();
-	// cout << h3 << endl;
-
-	// // cout << h3 << endl;
-
-	// cout << "PRUEBAS BLOQUE" << endl;
-
-	// Block b1;
-
-	// b1.setHeader(h1);
-
-	// cout << b1 << endl;
-
-	// Header h4 = b1.getHeader();
-
-	// cout << h4 << endl;
-
-	// b1.updateTxnsHash();
-
-	// //Falta la funcion de concatencion de transacciones el updateTxnsHash.
-	// //Falta el proof of work verificando la dificultad. Ambas deberian estar en privadas del bloque.
-
-	// string s = h4.cat();
-
-	// cout << s;
-
-	// Header h5;
-	// h5.setBits(3);
-	// h5.setTxnsHash("155dc94b29dce95bb2f940cdd2d7e0bce66dca9370c3ed96d50a30b3d84f8c4c");
-
-	// Block b2;
-
-	// b2.setHeader(h5);
-	// b2.proofOfWork(); //Tiene comentarios de prueba.
-	// 				  //El proofofwork se debe llamar desde la funcion updateTxnsHash, pero como
-	// 				  //faltan las funciones del body se pone aqui como prueba.
+	Block block0(g_input);
+	block0.writeToFile(g_output);*/
 }

@@ -254,21 +254,14 @@ Body const &Block::getBody() const
 
 void Block::updateTxnsHash()
 {
-    //Falta funcion para concatenar las transacciones.
-
-    /*
     
-    
-    string s = _body.concatenacion();
+    string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
 
-    //aqui va el proofofwork, no en el main.
+    cout << _header.getTxnsHash() << endl; //Prueba
 
-    //funcion de prueba
-    cout << _header.getTxnsHash() << endl;
-    */
+    proofOfWork();
 
-    cout << "Falta Implementar la concantenacion de las transacciones." << endl;
 }
 
 void Block::proofOfWork()
@@ -311,7 +304,6 @@ void Block::proofOfWork()
                 c = (h[j] - 48);
             }
 
-            // cout << "byte = " << c << endl;
 
             size_t i = 0;
 
@@ -323,26 +315,22 @@ void Block::proofOfWork()
 
                 if (c[3 - i] != 0)
                 {
-                    // cout << "i" << i << endl;
                     break;
                 }
 
                 conteo++;
-                // cout << "adentro" << conteo << endl;
             }
 
             if (i == 0)
             {
                 _header.incrementNonce();
                 conteo = 0;
-                // cout << "IGual a 0" << endl;
                 break;
             }
 
             if ((conteo < d) && ((conteo % 4) != 0))
             {
                 _header.incrementNonce();
-                // cout << conteo << "menor" << endl;
                 conteo = 0;
                 break;
             }
@@ -350,11 +338,9 @@ void Block::proofOfWork()
             if (conteo >= d)
             { //Si el conteo es mayor o igual a la dificultad
                 flag = false;
-                //cout << conteo << "sali" << endl;
                 break; //Salgo del ciclo.
             }
 
-            // cout << "Conteo afuera" << conteo << endl;
         }
     }
 }

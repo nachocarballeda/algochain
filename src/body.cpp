@@ -27,7 +27,7 @@ void Body::addTxn(Txn newTxn)
     _txn_count = _txn_count + 1;
 }
 
-string Body::cat()
+/*string Body::generateTxnsHash()
 {
     string concatTxns = "";
     if (_txn_count == 0)
@@ -35,6 +35,13 @@ string Body::cat()
         concatTxns.append(to_string(_txn_count));
         return concatTxns;
     }
+    cout << "TXNS HASH:" << sha256(concatTxns) << endl;
+    return sha256(concatTxns);
+}*/
+
+string Body::cat()
+{
+    string concatTxns = "";
     concatTxns.append(to_string(_txn_count));
     concatTxns.append("\n");
     for (size_t i = 0; i < _txn_count; i++)

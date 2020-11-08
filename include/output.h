@@ -10,13 +10,13 @@ class Output
 {
 public:
     Output();
-    Output(string, size_t);
+    Output(string, float);
     string getAddr();
     size_t getValue();
 
 private:
     string addr;
-    size_t value;
+    float value;
 };
 
 #endif /** _OUTPUTS_H_ */

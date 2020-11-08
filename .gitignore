@@ -1,5 +1,5 @@
 #buid objects
-/build
+/build/*.o
 
 #main bin file
 algochain.bin

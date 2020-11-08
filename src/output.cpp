@@ -9,7 +9,7 @@ Output::Output()
     cout << "Outputs default constructor was called." << endl;
 }
 
-Output::Output(string a, size_t v)
+Output::Output(string a, float v)
 {
     addr = a;
     value = v;

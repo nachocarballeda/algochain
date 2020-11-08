@@ -1,5 +1,5 @@
 IDIR =../include
-CCFLAGS= -Wall -I$(IDIR)
+CCFLAGS= -Wall -I$(IDIR) -std=c++11
 CC= g++
 
 all: algochain

@@ -29,7 +29,7 @@ public:
     void updateTxnsHash();
     void proofOfWork();
 
-    void loadTxns(const string);
+    void loadTxn(const string);
     void writeToFile(const string);
     void print();
 

@@ -17,7 +17,8 @@ public:
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);
     string cat();
-    string generateTxnsHash();
+    // string generateTxnsHash();
+    friend ostream &operator<<(ostream &, Body); //Operador '<<'.
 
 private:
     size_t _txn_count;

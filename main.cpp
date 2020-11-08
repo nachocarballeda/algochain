@@ -41,8 +41,9 @@ static void opt_input(string const &arg)
 int main(int argc, char *argv[])
 {
 	const string filepath = "txns.txt";
-	Block block0(filepath);
-	block0.print();
+	Block block0;
+	block0.loadTxn(filepath);
+	cout << block0 << endl;
 	block0.writeToFile("block.txt");
 
 	/*cmdline cmdl(options);

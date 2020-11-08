@@ -8,7 +8,6 @@ using namespace std;
 
 Txn::Txn()
 {
-    cout << "Txns Constructor was called." << endl;
     _n_tx_in = 0;
     _n_tx_out = 0;
 }

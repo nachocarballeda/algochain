@@ -32,41 +32,70 @@ Block::Block(string filepath)
 {
     ifstream txns_file(filepath);
     Txn newTxn;
+    if (!txns_file.good())
+    {
+        cout << "ERROR_INVALID_FILEPATH" << endl;
+        return;
+    }
 
     while (!txns_file.eof())
     {
         string line;
-        size_t n_tx_in = 0;
-        size_t n_tx_out = 0;
+        int n_tx_in = 0;
+        int n_tx_out = 0;
         getline(txns_file, line);
         istringstream inputStream(line);
-
-        inputStream >> n_tx_in;
-        // cout << "N TX IN: " << n_tx_in << endl;
-
-        for (size_t i = 0; i < n_tx_in; ++i)
+        if (line.length() == 0)
         {
+            cout << "TXN_FILE_IS_EMPTY" << endl;
+            return;
+        }
+        inputStream >> n_tx_in;
+        if (n_tx_in < 1)
+        {
+            cout << "INVALID N TX IN" << endl;
+            return;
+        }
 
+        for (int i = 0; i < n_tx_in; ++i)
+        {
             getline(txns_file, line);
             istringstream input_data(line);
             string tx_id;
-            size_t id_x;
+            int id_x;
             string addr;
             input_data >> tx_id;
+            if (tx_id.length() != 64 || input_data.fail())
+            {
+                cout << "INVALID TX ID IN INPUT " << i + 1 << endl;
+                return;
+            }
             input_data >> id_x;
+            if (id_x < 0 || input_data.fail())
+            {
+                cout << "INVALID IDX IN INPUT " << i + 1 << endl;
+                return;
+            }
             input_data >> addr;
+            if (addr.length() != 64 || input_data.fail())
+            {
+                cout << "INVALID ADDR IN INPUT " << i + 1 << endl;
+                return;
+            }
             Input newInput(addr, tx_id, id_x);
             newTxn.addInput(newInput);
-            // cout << "TX ID: " << tx_id << endl
-            //      << "ID X: " << id_x << endl
-            //      << "ADDR: " << addr << endl;
         }
 
         getline(txns_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
+        if (n_tx_out != n_tx_in || outputStream.fail())
+        {
+            cout << "INVALID N TX OUT" << endl;
+            return;
+        }
 
-        for (size_t i = 0; i < n_tx_out; ++i)
+        for (int i = 0; i < n_tx_out; ++i)
         {
 
             getline(txns_file, line);
@@ -74,23 +103,125 @@ Block::Block(string filepath)
             float value;
             string addr;
             output_data >> value;
+            if (value < 0 || output_data.fail())
+            {
+                cout << "INVALID VALUE IN OUTPUT " << i + 1 << endl;
+                return;
+            }
             output_data >> addr;
+            if (addr.length() != 64 || output_data.fail())
+            {
+                cout << "INVALID ADDR IN OUTPUT " << i + 1 << endl;
+                return;
+            }
             Output newOutput(addr, value);
             newTxn.addOutput(newOutput);
-            // cout << "VALUE: " << value << endl
-            //      << "ADDR: " << addr << endl;
         }
 
         _body.addTxn(newTxn);
-        txns_file.close();
-        cout << "Transactions loaded" << endl;
     }
+    txns_file.close();
+}
+
+void Block::loadTxn(const string filepath)
+{
+    ifstream txns_file(filepath);
+    Txn newTxn;
+    if (!txns_file.good())
+    {
+        cout << "ERROR_INVALID_FILEPATH" << endl;
+        return;
+    }
+
+    while (!txns_file.eof())
+    {
+        string line;
+        int n_tx_in = 0;
+        int n_tx_out = 0;
+        getline(txns_file, line);
+        istringstream inputStream(line);
+        if (line.length() == 0)
+        {
+            cout << "TXN_FILE_IS_EMPTY" << endl;
+            return;
+        }
+        inputStream >> n_tx_in;
+        if (n_tx_in < 1)
+        {
+            cout << "INVALID N TX IN" << endl;
+            return;
+        }
+
+        for (int i = 0; i < n_tx_in; ++i)
+        {
+            getline(txns_file, line);
+            istringstream input_data(line);
+            string tx_id;
+            int id_x;
+            string addr;
+            input_data >> tx_id;
+            if (tx_id.length() != 64 || input_data.fail())
+            {
+                cout << "INVALID TX ID IN INPUT " << i + 1 << endl;
+                return;
+            }
+            input_data >> id_x;
+            if (id_x < 0 || input_data.fail())
+            {
+                cout << "INVALID IDX IN INPUT " << i + 1 << endl;
+                return;
+            }
+            input_data >> addr;
+            if (addr.length() != 64 || input_data.fail())
+            {
+                cout << "INVALID ADDR IN INPUT " << i + 1 << endl;
+                return;
+            }
+            Input newInput(addr, tx_id, id_x);
+            newTxn.addInput(newInput);
+        }
+
+        getline(txns_file, line);
+        istringstream outputStream(line);
+        outputStream >> n_tx_out;
+        if (n_tx_out != n_tx_in || outputStream.fail())
+        {
+            cout << "INVALID N TX OUT" << endl;
+            return;
+        }
+
+        for (int i = 0; i < n_tx_out; ++i)
+        {
+
+            getline(txns_file, line);
+            istringstream output_data(line);
+            float value;
+            string addr;
+            output_data >> value;
+            if (value < 0 || output_data.fail())
+            {
+                cout << "INVALID VALUE IN OUTPUT " << i + 1 << endl;
+                return;
+            }
+            output_data >> addr;
+            if (addr.length() != 64 || output_data.fail())
+            {
+                cout << "INVALID ADDR IN OUTPUT" << i + 1 << endl;
+                return;
+            }
+            Output newOutput(addr, value);
+            newTxn.addOutput(newOutput);
+        }
+
+        _body.addTxn(newTxn);
+    }
+    txns_file.close();
 }
 
 void Block::print()
 {
     cout << _header.cat() << endl;
-    cout << _body.cat();
+    cout << _body.cat() << endl;
 }
 
 void Block::writeToFile(string filepath)
@@ -230,6 +361,6 @@ void Block::proofOfWork()
 
 ostream &operator<<(ostream &os, const Block &b)
 {
-    return os << b._header;
-    // << b._body            FALTA IMPLEMENTAR ESTA FUNCION
+    return os << b._header << endl
+              << b._body;
 }

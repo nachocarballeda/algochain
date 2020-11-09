@@ -1,0 +1,26 @@
+#ifndef _ERROR_H_
+#define _ERROR_H_
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Error msgs
+#define MSG_ERROR_INVALID_FILEPATH "Invalid filepath"
+#define MSG_ERROR_WRITING_TO_FILE "Couldn't write to file"
+#define MSG_ERROR_INVALID_N_TX_IN "Invalid number of transaction inputs"
+#define MSG_ERROR_INVALID_TX_ID "Invalid transaction ID"
+#define MSG_ERROR_INVALID_IDX "Invalid IDx"
+#define MSG_ERROR_INVALID_ADDR "Invalid address"
+#define MSG_ERROR_INVALID_N_TX_OUT "Invalid number of transaction outputs"
+#define MSG_ERROR_INVALID_OUTPUT_VALUE "Invalid output value"
+#define MSG_ERROR_INVALID_OUTPUT_ADDR "Invalid output address"
+
+// Warning msgs
+#define MSG_WARNING_TXN_FILE_IS_EMPTY "Transaction file is empty"
+
+void showError(string, string = "");
+void showWarning(string);
+
+#endif

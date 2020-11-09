@@ -9,6 +9,7 @@
 #include "include/block.h"
 #include "include/sha256.h"
 #include "include/cmdline.h"
+#include "include/error.h"
 
 #define MSG_ERR_OPEN_FILE "Error al abrir el archivo "
 

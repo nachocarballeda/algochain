@@ -1,7 +1,7 @@
 #include "../include/block.h"
 #include "../include/body.h"
 #include "../include/sha256.h"
-
+#include "../include/error.h"
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -39,7 +39,7 @@ void Block::loadTxn(const string filepath)
     Txn newTxn;
     if (!txns_file.good())
     {
-        cerr << "ERROR_INVALID_FILEPATH" << endl;
+        showError(MSG_ERROR_INVALID_FILEPATH);
         return;
     }
 
@@ -52,13 +52,13 @@ void Block::loadTxn(const string filepath)
         istringstream inputStream(line);
         if (line.length() == 0)
         {
-            cerr << "TXN_FILE_IS_EMPTY" << endl;
+            showWarning(MSG_WARNING_TXN_FILE_IS_EMPTY);
             return;
         }
         inputStream >> n_tx_in;
         if (n_tx_in < 1)
         {
-            cerr << "INVALID N TX IN" << endl;
+            showError(MSG_ERROR_INVALID_N_TX_IN);
             return;
         }
 
@@ -72,19 +72,19 @@ void Block::loadTxn(const string filepath)
             input_data >> tx_id;
             if (tx_id.length() != 64 || input_data.fail())
             {
-                cerr << "INVALID TX ID IN INPUT " << i + 1 << endl;
+                showError(MSG_ERROR_INVALID_TX_ID, "Input number " + (i + 1));
                 return;
             }
             input_data >> id_x;
             if (id_x < 0 || input_data.fail())
             {
-                cerr << "INVALID IDX IN INPUT " << i + 1 << endl;
+                showError(MSG_ERROR_INVALID_IDX, "Input number " + (i + 1));
                 return;
             }
             input_data >> addr;
             if (addr.length() != 64 || input_data.fail())
             {
-                cerr << "INVALID ADDR IN INPUT " << i + 1 << endl;
+                showError(MSG_ERROR_INVALID_ADDR, "Input number " + (i + 1));
                 return;
             }
             Input newInput(addr, tx_id, id_x);
@@ -96,7 +96,7 @@ void Block::loadTxn(const string filepath)
         outputStream >> n_tx_out;
         if (n_tx_out >= n_tx_in || outputStream.fail())
         {
-            cerr << "INVALID N TX OUT" << endl;
+            showError(MSG_ERROR_INVALID_N_TX_OUT);
             return;
         }
         cout << n_tx_out << "==" << n_tx_in << endl;
@@ -110,13 +110,13 @@ void Block::loadTxn(const string filepath)
             output_data >> value;
             if (value < 0 || output_data.fail())
             {
-                cerr << "INVALID VALUE IN OUTPUT " << i + 1 << endl;
+                showError(MSG_ERROR_INVALID_OUTPUT_VALUE, "Output number " + (i + 1));
                 return;
             }
             output_data >> addr;
             if (addr.length() != 64 || output_data.fail())
             {
-                cerr << "INVALID ADDR IN OUTPUT" << i + 1 << endl;
+                showError(MSG_ERROR_INVALID_OUTPUT_ADDR, "Output number " + (i + 1));
                 return;
             }
             Output newOutput(addr, value);
@@ -139,14 +139,14 @@ void Block::writeToFile(string filepath)
     ofstream block_file(filepath);
     if (!block_file.good())
     {
-        cout << "ERROR_INVALID_FILEPATH" << endl;
+        showError(MSG_ERROR_INVALID_FILEPATH);
         return;
     }
     block_file << _header.cat()
                << _body.cat();
     if (!block_file.good())
     {
-        cout << "ERROR_WRITING_TO_FILE" << endl;
+        showError(MSG_ERROR_WRITING_TO_FILE);
         return;
     }
     block_file.close();

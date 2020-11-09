@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "../include/error.h"
 #include "../include/body.h"
 #include "../include/header.h"
 #include "../include/txn.h"
@@ -27,7 +28,6 @@ public:
     Header const &getHeader() const;
     Body const &getBody() const;
     void updateTxnsHash();
-    
 
     void loadTxn(const string);
     void writeToFile(const string);
@@ -39,4 +39,4 @@ private:
     void proofOfWork();
 };
 
-#endif /** _BLOCK_H_ */
+#endif

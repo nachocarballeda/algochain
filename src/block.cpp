@@ -226,10 +226,20 @@ void Block::print()
 
 void Block::writeToFile(string filepath)
 {
-    ofstream file(filepath);
-    file << _header.cat() << endl
-         << _body.cat();
-    file.close();
+    ofstream block_file(filepath);
+    if (!block_file.good())
+    {
+        cout << "ERROR_INVALID_FILEPATH" << endl;
+        return;
+    }
+    block_file << _header.cat()
+               << _body.cat();
+    if (!block_file.good())
+    {
+        cout << "ERROR_WRITING_TO_FILE" << endl;
+        return;
+    }
+    block_file.close();
 }
 
 void Block::setHeader(const Header &h)

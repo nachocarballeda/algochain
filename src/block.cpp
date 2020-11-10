@@ -162,6 +162,11 @@ void Block::setBody(const Body &b)
     _body = b;
 }
 
+void Block::setDifficulty(const size_t &d)
+{
+    _header.setBits(d);
+}
+
 Header const &Block::getHeader() const
 {
     return _header;
@@ -177,8 +182,6 @@ void Block::updateTxnsHash()
 
     string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
-
-    // cout << _header.getTxnsHash() << endl; //Prueba
 
     proofOfWork();
 }
@@ -200,14 +203,7 @@ void Block::proofOfWork()
 
         string s = _header.cat();
 
-        cout << s;
-
         string h = sha256(sha256(s));
-
-        cout << "hash" << endl
-             << h << endl;
-
-        //La cantidad de bits nulos del hash debe ser igual o mayor a la dificultad.
 
         for (size_t j = 0; j < 32; j++)
         { //Reviso los 32 bytes del hash.
@@ -262,8 +258,8 @@ void Block::proofOfWork()
     }
 }
 
-ostream &operator<<(ostream &os, const Block &b)
+ostream &operator<<(ostream &os, Block b)
 {
-    return os << b._header << endl
+    return os << b._header
               << b._body;
 }

@@ -70,6 +70,8 @@ int main(int argc, char *argv[])
 
 	Block block0(g_input);
 
+	block0.setDifficulty(g_difficulty);
+
 	block0.updateTxnsHash();
 
 	cout << block0 << endl;

@@ -29,7 +29,7 @@ class Header
         void incrementNonce();                      //Aumenta el valor del _nonce.
         string cat();                               //Concatena el contenido del Header.
 
-        friend ostream &operator<<(ostream &, const Header &); //Operador '<<'.
+        friend ostream &operator<<(ostream &, Header); //Operador '<<'.
     
 };
 

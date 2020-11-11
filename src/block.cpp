@@ -202,7 +202,7 @@ void Block::proofOfWork()
     if (d == 0) //Si es 0, es indistinto el hash.
         return;
 
-    size_t conteo = 0;
+    size_t count = 0;
     bitset<4> c;
     bool flag = true;
 
@@ -240,25 +240,25 @@ void Block::proofOfWork()
                     break;
                 }
 
-                conteo++;
+                count++;
             }
 
             if (i == 0)
             {
                 _header.incrementNonce();
-                conteo = 0;
+                count = 0;
                 break;
             }
 
-            if ((conteo < d) && ((conteo % 4) != 0))
+            if ((count < d) && ((count % 4) != 0))
             {
                 _header.incrementNonce();
-                conteo = 0;
+                count = 0;
                 break;
             }
 
-            if (conteo >= d)
-            { //Si el conteo es mayor o igual a la dificultad
+            if (count >= d)
+            { //Si el count es mayor o igual a la dificultad
                 flag = false;
                 break; //Salgo del ciclo.
             }

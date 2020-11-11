@@ -99,7 +99,6 @@ void Block::loadTxn(const string filepath)
             showError(MSG_ERROR_INVALID_N_TX_OUT);
             return;
         }
-        cout << n_tx_out << "==" << n_tx_in << endl;
         for (int i = 0; i < n_tx_out; ++i)
         {
 
@@ -136,20 +135,29 @@ void Block::print()
 
 void Block::writeToFile(string filepath)
 {
-    ofstream block_file(filepath);
-    if (!block_file.good())
+    if(filepath[0]!='-')
     {
-        showError(MSG_ERROR_INVALID_FILEPATH);
-        return;
+        ofstream block_file(filepath);
+        if (!block_file.good())
+        {
+            showError(MSG_ERROR_INVALID_FILEPATH);
+            return;
+        }
+        block_file << _header.cat()
+                << _body.cat();
+
+        if (!block_file.good())
+        {
+            showError(MSG_ERROR_WRITING_TO_FILE);
+            return;
+        }
+        block_file.close();
     }
-    block_file << _header.cat()
-               << _body.cat();
-    if (!block_file.good())
+    else
     {
-        showError(MSG_ERROR_WRITING_TO_FILE);
-        return;
+        cout << _header.cat()
+             << _body.cat();
     }
-    block_file.close();
 }
 
 void Block::setHeader(const Header &h)

@@ -21,7 +21,7 @@ static void _opt_set_difficulty(string const &arg);
 
 static option_t options[] = {
 	{1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
-	{1, "o", "output", "block.txt", _opt_set_output, OPT_DEFAULT},
+	{1, "o", "output", "-", _opt_set_output, OPT_DEFAULT},
 	{1, "i", "input", "-", _opt_set_input, OPT_DEFAULT},
 	{
 		0,
@@ -35,7 +35,6 @@ static void _opt_set_difficulty(string const &arg)
 {
 	char *pEnd;
 	g_difficulty = strtol(arg.c_str(), &pEnd, 10);
-	cout << "Difficulty is " << g_difficulty << endl;
 }
 
 static void _opt_set_output(string const &arg)
@@ -74,6 +73,5 @@ int main(int argc, char *argv[])
 
 	block0.updateTxnsHash();
 
-	cout << block0 << endl;
 	block0.writeToFile(g_output);
 }

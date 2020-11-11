@@ -1,7 +1,7 @@
 #include "../include/block.h"
 #include "../include/body.h"
 #include "../include/sha256.h"
-#include "../include/error.h"
+#include "../include/errorlog.h"
 #include <iostream>
 #include <string>
 #include <bitset>

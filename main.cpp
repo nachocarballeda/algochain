@@ -9,7 +9,7 @@
 #include "include/block.h"
 #include "include/sha256.h"
 #include "include/cmdline.h"
-#include "include/error.h"
+#include "include/errorlog.h"
 
 using namespace std;
 
@@ -17,6 +17,9 @@ static void _opt_set_input(string const &arg);
 static void _opt_set_output(string const &arg);
 static void _opt_set_difficulty(string const &arg);
 
+static string g_input_file;
+static string g_output_file;
+static size_t g_difficulty;
 static option_t options[] = {
 	{1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
 	{1, "o", "output", "-", _opt_set_output, OPT_DEFAULT},
@@ -24,10 +27,6 @@ static option_t options[] = {
 	{
 		0,
 	}};
-
-static string g_input_file;
-static string g_output_file;
-static size_t g_difficulty;
 
 static void _opt_set_difficulty(string const &arg)
 {

@@ -1,5 +1,5 @@
-#ifndef _ERROR_H_
-#define _ERROR_H_
+#ifndef _ERRORLOG_H_
+#define _ERRORLOG_H_
 
 #include <iostream>
 #include <string>

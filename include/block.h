@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "../include/error.h"
+#include "../include/errorlog.h"
 #include "../include/body.h"
 #include "../include/header.h"
 #include "../include/txn.h"

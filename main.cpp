@@ -11,8 +11,6 @@
 #include "include/cmdline.h"
 #include "include/error.h"
 
-#define MSG_ERR_OPEN_FILE "Error al abrir el archivo "
-
 using namespace std;
 
 static void _opt_set_input(string const &arg);
@@ -55,7 +53,7 @@ static void _opt_set_input(string const &arg)
 		std::stringstream in(arg);
 		if (!in.good())
 		{
-			cerr << MSG_ERR_OPEN_FILE << arg << endl;
+			showError(MSG_ERROR_OPENING_A_FILE, "main.cpp");
 			exit(1);
 		}
 		in >> g_input_file;

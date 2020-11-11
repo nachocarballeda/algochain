@@ -16,6 +16,7 @@ using namespace std;
 #define MSG_ERROR_INVALID_N_TX_OUT "Invalid number of transaction outputs"
 #define MSG_ERROR_INVALID_OUTPUT_VALUE "Invalid output value"
 #define MSG_ERROR_INVALID_OUTPUT_ADDR "Invalid output address"
+#define MSG_ERROR_OPENING_A_FILE "Couldn't open the file"
 
 // Warning msgs
 #define MSG_WARNING_TXN_FILE_IS_EMPTY "Transaction file is empty"

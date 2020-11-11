@@ -5,10 +5,11 @@ CC = g++
 all: algochain
 
 algochain: main.o sha256.o cmdline.o block.o body.o header.o txn.o \
-	input.o output.o outpoint.o errorlog.o
+	input.o output.o outpoint.o errorlog.o arghandler.o
 	$(CC) $(CCFLAGS) -o algochain.bin build/main.o build/sha256.o \
 	build/cmdline.o build/txn.o build/block.o build/body.o build/header.o \
-	build/input.o build/output.o build/outpoint.o build/errorlog.o
+	build/input.o build/output.o build/outpoint.o build/errorlog.o \
+	build/arghandler.o
 	
 main.o: main.cpp include/sha256.h include/cmdline.h
 	$(CC) $(CCFLAGS) -c main.cpp -o build/main.o 
@@ -43,5 +44,7 @@ outpoint.o:  src/outpoint.cpp include/outpoint.h
 errorlog.o:  src/errorlog.cpp include/errorlog.h
 	$(CC) $(CCFLAGS) -c src/errorlog.cpp -o build/errorlog.o
 
+arghandler.o:  src/arghandler.cpp include/arghandler.h
+	$(CC) $(CCFLAGS) -c src/arghandler.cpp -o build/arghandler.o
 clean:
 	$(RM) build/*.o algochain

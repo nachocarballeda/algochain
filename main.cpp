@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <string>
+#include <tuple>
 
 #include "include/body.h"
 #include "include/header.h"
@@ -10,61 +11,28 @@
 #include "include/sha256.h"
 #include "include/cmdline.h"
 #include "include/errorlog.h"
+#include "include/arghandler.h"
 
-using namespace std;
-
-static void _opt_set_input(string const &arg);
-static void _opt_set_output(string const &arg);
-static void _opt_set_difficulty(string const &arg);
-
-static string g_input_file;
-static string g_output_file;
-static size_t g_difficulty;
-static option_t options[] = {
-	{1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
-	{1, "o", "output", "-", _opt_set_output, OPT_DEFAULT},
-	{1, "i", "input", "-", _opt_set_input, OPT_DEFAULT},
+option_t options[] = {
+	{1, "d", "difficulty", "1", opt_set_difficulty, OPT_MANDATORY},
+	{1, "o", "output", "-", opt_set_output, OPT_DEFAULT},
+	{1, "i", "input", "-", opt_set_input, OPT_DEFAULT},
 	{
 		0,
 	}};
 
-static void _opt_set_difficulty(string const &arg)
-{
-	char *pEnd;
-	g_difficulty = strtol(arg.c_str(), &pEnd, 10);
-}
-
-static void _opt_set_output(string const &arg)
-{
-	std::stringstream out(arg);
-	if (out.good())
-		out >> g_output_file;
-}
-
-static void _opt_set_input(string const &arg)
-{
-	if (arg == "-")
-	{
-		cin >> g_input_file;
-	}
-	else
-	{
-		std::stringstream in(arg);
-		if (!in.good())
-		{
-			showError(MSG_ERROR_OPENING_A_FILE, "main.cpp");
-			exit(1);
-		}
-		in >> g_input_file;
-	}
-}
+using namespace std;
 
 int main(int argc, char *argv[])
 {
+    string _input_file;
+    string _output_file;
+    size_t _difficulty;
 	cmdline cmdl(options);
 	cmdl.parse(argc, argv);
-	Block block0(g_input_file);
-	block0.setDifficulty(g_difficulty);
+    tie(_input_file, _output_file, _difficulty) = opt_get_values();
+	Block block0(_input_file);
+	block0.setDifficulty(_difficulty);
 	block0.updateTxnsHash();
-	block0.writeToFile(g_output_file);
+	block0.writeToFile(_output_file);
 }

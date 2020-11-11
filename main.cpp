@@ -27,8 +27,8 @@ static option_t options[] = {
 		0,
 	}};
 
-static string g_input;
-static string g_output;
+static string g_input_file;
+static string g_output_file;
 static size_t g_difficulty;
 
 static void _opt_set_difficulty(string const &arg)
@@ -41,14 +41,14 @@ static void _opt_set_output(string const &arg)
 {
 	std::stringstream out(arg);
 	if (out.good())
-		out >> g_output;
+		out >> g_output_file;
 }
 
 static void _opt_set_input(string const &arg)
 {
 	if (arg == "-")
 	{
-		cin >> g_input;
+		cin >> g_input_file;
 	}
 	else
 	{
@@ -58,7 +58,7 @@ static void _opt_set_input(string const &arg)
 			cerr << MSG_ERR_OPEN_FILE << arg << endl;
 			exit(1);
 		}
-		in >> g_input;
+		in >> g_input_file;
 	}
 }
 
@@ -66,12 +66,8 @@ int main(int argc, char *argv[])
 {
 	cmdline cmdl(options);
 	cmdl.parse(argc, argv);
-
-	Block block0(g_input);
-
+	Block block0(g_input_file);
 	block0.setDifficulty(g_difficulty);
-
 	block0.updateTxnsHash();
-
-	block0.writeToFile(g_output);
+	block0.writeToFile(g_output_file);
 }

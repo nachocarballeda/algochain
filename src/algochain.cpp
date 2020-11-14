@@ -10,6 +10,11 @@
 #include <string>
 #include <bitset>
 
+Algochain ::Algochain()
+{
+    _first = 0;
+}
+
 Algochain ::Algochain(float value, string user, size_t bits)
 {
     BlockNode *_aux1;
@@ -70,6 +75,17 @@ void Algochain::emit()
         cout << aux->getData();
         aux = aux->getNext();
     }
+}
+
+string Algochain::getGenesisBlockHash()
+{
+    if (isEmpty())
+    {
+        showError(MSG_ERROR_EMPTY_ALGOCHAIN);
+    }
+    ostringstream oss;
+    oss << _first->getData();
+    return sha256(oss.str());
 }
 
 bool Algochain ::isEmpty() const

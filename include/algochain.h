@@ -33,11 +33,14 @@ private:
 class Algochain
 {
 public:
+    Algochain();
     Algochain(float, string, size_t); //constructor
     ~Algochain();                     //destructor
     void addBlock(Block);             //alta al final
     bool isEmpty() const;             //retorna true si lista vacia
     void emit();                      //emite la lista. Escribirla
+    string getGenesisBlockHash();
+
 private:
     BlockNode *_first;
 };

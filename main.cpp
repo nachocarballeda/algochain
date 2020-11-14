@@ -43,4 +43,5 @@ int main(int argc, char *argv[])
 
     Algochain algochain(10, "matilareo", 2);
     algochain.emit();
+    algochain.getGenesisBlockHash();
 }

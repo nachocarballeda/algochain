@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 
 #include "include/algochain.h"
 #include "include/body.h"
@@ -40,8 +41,23 @@ int main(int argc, char *argv[])
     // block0.writeToFile(_output_file);
 
     //TP 1
+    float value = 10;
+    string user = "matilareo";
+    size_t bits = 2;
 
-    Algochain algochain(10, "matilareo", 2);
+    Algochain algochain(value, user, bits);
     algochain.emit();
     algochain.getGenesisBlockHash();
+
+    // Hash map para balance (EJEMPLO)
+
+    unordered_map<string, float> balance;
+
+    balance.insert({user, value});
+
+    for (auto const &pair : balance)
+    {
+        std::cout << endl
+                  << "{" << pair.first << ": " << pair.second << "}\n";
+    }
 }

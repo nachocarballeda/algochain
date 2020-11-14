@@ -40,6 +40,38 @@ int main(int argc, char *argv[])
     // block0.updateTxnsHash();
     // block0.writeToFile(_output_file);
 
+    istringstream user_input;
+    string user_command;
+    string user_complete_line;
+
+    while(true)
+    {
+        getline(cin, user_complete_line);
+        istringstream user_input(user_complete_line);
+        user_input >> user_command;
+        cout << "comando es " << user_command << endl;
+        if (user_command == "init")
+            cout <<  "init done.." << endl;
+        else if (user_command == "transfer")
+            cout << "transfer done.." << endl;
+        else if (user_command == "mine")
+            cout << "Minning start !" << endl;
+        else if (user_command == "balance")
+            cout << "balance of the user is X" << endl;
+        else if (user_command == "block")
+            cout << "block's fields are..." << endl;
+        else if (user_command == "exit")
+        {
+            cout << "bye.." << endl;
+            exit(0);
+        }
+        else
+        {
+            cout << "command is invalid." << endl;
+        }
+
+    }
+
     //TP 1
     float value = 10;
     string user = "matilareo";

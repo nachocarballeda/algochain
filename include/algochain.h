@@ -22,6 +22,8 @@ public:
         _next = 0;
         _ant = 0;
     }
+    Block getData() { return _data; }
+    BlockNode *getNext() { return _next; }
 
 private:
     Block _data;
@@ -35,7 +37,7 @@ public:
     ~Algochain();                     //destructor
     void addBlock(Block);             //alta al final
     bool isEmpty() const;             //retorna true si lista vacia
-    void emit() const;                //emite la lista. Escribirla
+    void emit();                      //emite la lista. Escribirla
 private:
     BlockNode *_first;
 };

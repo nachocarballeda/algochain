@@ -5,6 +5,7 @@
 #include <string>
 #include <tuple>
 
+#include "include/algochain.h"
 #include "include/body.h"
 #include "include/header.h"
 #include "include/block.h"
@@ -25,14 +26,21 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    string _input_file;
-    string _output_file;
-    size_t _difficulty;
-    cmdline cmdl(options);
-    cmdl.parse(argc, argv);
-    tie(_input_file, _output_file, _difficulty) = opt_get_values();
-    Block block0(_input_file);
-    block0.setDifficulty(_difficulty);
-    block0.updateTxnsHash();
-    block0.writeToFile(_output_file);
+    // TP 0
+
+    // string _input_file;
+    // string _output_file;
+    // size_t _difficulty;
+    // cmdline cmdl(options);
+    // cmdl.parse(argc, argv);
+    // tie(_input_file, _output_file, _difficulty) = opt_get_values();
+    // Block block0(_input_file);
+    // block0.setDifficulty(_difficulty);
+    // block0.updateTxnsHash();
+    // block0.writeToFile(_output_file);
+
+    //TP 1
+
+    Algochain algochain(10, "matilareo", 2);
+    algochain.emit();
 }

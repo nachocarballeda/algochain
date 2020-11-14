@@ -62,6 +62,16 @@ void Algochain ::addBlock(Block _b)
     }
 }
 
+void Algochain::emit()
+{
+    BlockNode *aux = _first;
+    while (aux)
+    {
+        cout << aux->getData();
+        aux = aux->getNext();
+    }
+}
+
 bool Algochain ::isEmpty() const
 {
     return (_first == 0);

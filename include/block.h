@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "../include/error.h"
+#include "../include/errorlog.h"
 #include "../include/body.h"
 #include "../include/header.h"
 #include "../include/txn.h"
@@ -25,6 +25,7 @@ public:
 
     void setHeader(const Header &);
     void setBody(const Body &);
+    void setDifficulty(const size_t &);
     Header const &getHeader() const;
     Body const &getBody() const;
     void updateTxnsHash();
@@ -33,7 +34,7 @@ public:
     void writeToFile(const string);
     void print();
 
-    friend std::ostream &operator<<(std::ostream &, const Block &);
+    friend std::ostream &operator<<(std::ostream &, Block);
 
 private:
     void proofOfWork();

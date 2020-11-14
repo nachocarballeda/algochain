@@ -13,6 +13,7 @@ class Body
 {
 public:
     Body();
+    Body(Txn);
     size_t getTxnCount(void);
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);

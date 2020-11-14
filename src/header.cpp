@@ -76,7 +76,7 @@ void Header::incrementNonce()
 string Header::cat()
 {
 
-    string s;
+    string s = "";
 
     s += _prev_block;
     s += '\n';
@@ -90,10 +90,7 @@ string Header::cat()
     return s;
 }
 
-ostream &operator<<(ostream &os, const Header &h)
+ostream &operator<<(ostream &os, Header h)
 {
-    return os << h._prev_block << endl
-              << h._txns_hash << endl
-              << h._bits << endl
-              << h._nonce;
+    return os << h.cat();
 }

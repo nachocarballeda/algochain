@@ -3,75 +3,36 @@
 #include <sstream>
 #include <cstdlib>
 #include <string>
+#include <tuple>
 
 #include "include/body.h"
 #include "include/header.h"
 #include "include/block.h"
 #include "include/sha256.h"
 #include "include/cmdline.h"
-#include "include/error.h"
+#include "include/errorlog.h"
+#include "include/arghandler.h"
 
-#define MSG_ERR_OPEN_FILE "Error al abrir el archivo "
+option_t options[] = {
+    {1, "d", "difficulty", "1", opt_set_difficulty, OPT_MANDATORY},
+    {1, "o", "output", "-", opt_set_output, OPT_DEFAULT},
+    {1, "i", "input", "-", opt_set_input, OPT_DEFAULT},
+    {
+        0,
+    }};
 
 using namespace std;
 
-static void _opt_set_input(string const &arg);
-static void _opt_set_output(string const &arg);
-static void _opt_set_difficulty(string const &arg);
-
-static option_t options[] = {
-	{1, "d", "difficulty", "1", _opt_set_difficulty, OPT_MANDATORY},
-	{1, "o", "output", "block.txt", _opt_set_output, OPT_DEFAULT},
-	{1, "i", "input", "-", _opt_set_input, OPT_DEFAULT},
-	{
-		0,
-	}};
-
-static string g_input;
-static string g_output;
-static size_t g_difficulty;
-
-static void _opt_set_difficulty(string const &arg)
-{
-	char *pEnd;
-	g_difficulty = strtol(arg.c_str(), &pEnd, 10);
-	cout << "Difficulty is " << g_difficulty << endl;
-}
-
-static void _opt_set_output(string const &arg)
-{
-	std::stringstream out(arg);
-	if (out.good())
-		out >> g_output;
-}
-
-static void _opt_set_input(string const &arg)
-{
-	if (arg == "-")
-	{
-		cin >> g_input;
-	}
-	else
-	{
-		std::stringstream in(arg);
-		if (!in.good())
-		{
-			cerr << MSG_ERR_OPEN_FILE << arg << endl;
-			exit(1);
-		}
-		in >> g_input;
-	}
-}
-
 int main(int argc, char *argv[])
 {
-	cmdline cmdl(options);
-	cmdl.parse(argc, argv);
-
-	Block block0(g_input);
-
-	block0.updateTxnsHash();
-
-	cout << block0 << endl;
-	block0.writeToFile(g_output);
+    string _input_file;
+    string _output_file;
+    size_t _difficulty;
+    cmdline cmdl(options);
+    cmdl.parse(argc, argv);
+    tie(_input_file, _output_file, _difficulty) = opt_get_values();
+    Block block0(_input_file);
+    block0.setDifficulty(_difficulty);
+    block0.updateTxnsHash();
+    block0.writeToFile(_output_file);
 }

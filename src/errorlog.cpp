@@ -1,4 +1,5 @@
-#include "../include/error.h"
+#include "../include/errorlog.h"
+
 using namespace std;
 
 void showError(string err)

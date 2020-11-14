@@ -11,6 +11,12 @@ Body::Body(void)
     _txn_count = 0;
 }
 
+Body::Body(Txn newTxn)
+{
+    _txns.push_back(newTxn);
+    _txn_count = _txn_count + 1;
+}
+
 void Body::setTxnCount(size_t txn_count)
 {
     _txn_count = txn_count;

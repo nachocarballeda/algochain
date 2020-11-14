@@ -1,7 +1,7 @@
 #include "../include/block.h"
 #include "../include/body.h"
 #include "../include/sha256.h"
-#include "../include/error.h"
+#include "../include/errorlog.h"
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -99,7 +99,6 @@ void Block::loadTxn(const string filepath)
             showError(MSG_ERROR_INVALID_N_TX_OUT);
             return;
         }
-        cout << n_tx_out << "==" << n_tx_in << endl;
         for (int i = 0; i < n_tx_out; ++i)
         {
 
@@ -136,20 +135,29 @@ void Block::print()
 
 void Block::writeToFile(string filepath)
 {
-    ofstream block_file(filepath);
-    if (!block_file.good())
+    if(filepath[0]!='-')
     {
-        showError(MSG_ERROR_INVALID_FILEPATH);
-        return;
+        ofstream block_file(filepath);
+        if (!block_file.good())
+        {
+            showError(MSG_ERROR_INVALID_FILEPATH);
+            return;
+        }
+        block_file << _header.cat()
+                << _body.cat();
+
+        if (!block_file.good())
+        {
+            showError(MSG_ERROR_WRITING_TO_FILE);
+            return;
+        }
+        block_file.close();
     }
-    block_file << _header.cat()
-               << _body.cat();
-    if (!block_file.good())
+    else
     {
-        showError(MSG_ERROR_WRITING_TO_FILE);
-        return;
+        cout << _header.cat()
+             << _body.cat();
     }
-    block_file.close();
 }
 
 void Block::setHeader(const Header &h)
@@ -160,6 +168,11 @@ void Block::setHeader(const Header &h)
 void Block::setBody(const Body &b)
 {
     _body = b;
+}
+
+void Block::setDifficulty(const size_t &d)
+{
+    _header.setBits(d);
 }
 
 Header const &Block::getHeader() const
@@ -178,8 +191,6 @@ void Block::updateTxnsHash()
     string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
 
-    // cout << _header.getTxnsHash() << endl; //Prueba
-
     proofOfWork();
 }
 
@@ -191,7 +202,7 @@ void Block::proofOfWork()
     if (d == 0) //Si es 0, es indistinto el hash.
         return;
 
-    size_t conteo = 0;
+    size_t count = 0;
     bitset<4> c;
     bool flag = true;
 
@@ -200,14 +211,7 @@ void Block::proofOfWork()
 
         string s = _header.cat();
 
-        cout << s;
-
         string h = sha256(sha256(s));
-
-        cout << "hash" << endl
-             << h << endl;
-
-        //La cantidad de bits nulos del hash debe ser igual o mayor a la dificultad.
 
         for (size_t j = 0; j < 32; j++)
         { //Reviso los 32 bytes del hash.
@@ -236,25 +240,25 @@ void Block::proofOfWork()
                     break;
                 }
 
-                conteo++;
+                count++;
             }
 
             if (i == 0)
             {
                 _header.incrementNonce();
-                conteo = 0;
+                count = 0;
                 break;
             }
 
-            if ((conteo < d) && ((conteo % 4) != 0))
+            if ((count < d) && ((count % 4) != 0))
             {
                 _header.incrementNonce();
-                conteo = 0;
+                count = 0;
                 break;
             }
 
-            if (conteo >= d)
-            { //Si el conteo es mayor o igual a la dificultad
+            if (count >= d)
+            { //Si el count es mayor o igual a la dificultad
                 flag = false;
                 break; //Salgo del ciclo.
             }
@@ -262,8 +266,8 @@ void Block::proofOfWork()
     }
 }
 
-ostream &operator<<(ostream &os, const Block &b)
+ostream &operator<<(ostream &os, Block b)
 {
-    return os << b._header << endl
+    return os << b._header
               << b._body;
 }

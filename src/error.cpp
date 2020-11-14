@@ -1,12 +1,13 @@
 #include "../include/error.h"
 using namespace std;
 
-void showError(string err, string det)
+void showError(string err)
 {
-    if (det != "")
-        cerr << "ERROR: " << err << " (" << det << ")" << endl;
-    else
-        cerr << "ERROR: " << err << endl;
+    cerr << "ERROR: " << err << endl;
+}
+void showError(string err, string detail)
+{
+    cerr << "ERROR: " << err << " (" << detail << ")" << endl;
 }
 
 void showWarning(string err)

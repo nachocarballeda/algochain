@@ -19,8 +19,8 @@ using namespace std;
 
 // Warning msgs
 #define MSG_WARNING_TXN_FILE_IS_EMPTY "Transaction file is empty"
-
-void showError(string, string = "");
+void showError(string err);
+void showError(string err, string detail);
 void showWarning(string);
 
 #endif

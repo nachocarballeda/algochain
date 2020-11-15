@@ -45,4 +45,6 @@ private:
     BlockNode *_first;
 };
 
+void algochainStart(void);
+
 #endif

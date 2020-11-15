@@ -9,6 +9,9 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <tuple>
+
+std::tuple<string, float, size_t> _command_init(istringstream &user_input);
 
 Algochain ::Algochain()
 {
@@ -67,7 +70,7 @@ void Algochain ::addBlock(Block _b)
     }
 }
 
-void Algochain::emit()
+void Algochain ::emit()
 {
     BlockNode *aux = _first;
     while (aux)
@@ -77,7 +80,7 @@ void Algochain::emit()
     }
 }
 
-string Algochain::getGenesisBlockHash()
+string Algochain ::getGenesisBlockHash()
 {
     if (isEmpty())
     {
@@ -91,4 +94,61 @@ string Algochain::getGenesisBlockHash()
 bool Algochain ::isEmpty() const
 {
     return (_first == 0);
+}
+
+void algochainStart(void)
+{
+    istringstream user_input;
+    string user_command;
+    string user_complete_line;
+    
+    string user_name;
+    float value;
+    size_t bits;
+
+    while(true)
+    {
+        getline(cin, user_complete_line);
+        istringstream user_input(user_complete_line);
+        user_input >> user_command;
+        cout << "command is " << user_command << endl;
+        if (user_command == "init")
+        {
+            tie(user_name, value, bits) = _command_init(user_input);
+            Algochain algochain(value, user_name, bits);
+            algochain.emit();
+            algochain.getGenesisBlockHash();
+        }
+        else if (user_command == "transfer")
+            cout << "transfer done.." << endl;
+        else if (user_command == "mine")
+            cout << "minning start !" << endl;
+        else if (user_command == "balance")
+            cout << "balance of the user is X" << endl;
+        else if (user_command == "block")
+            cout << "block's fields are.." << endl;
+        else if (user_command == "help")
+            cout << "display help file.." << endl;
+        else if (user_command == "exit")
+        {
+            cout << "bye.." << endl;
+            exit(0);
+        }
+        else
+        {
+            cout << "Command is invalid. Write help to see all the available commands" << endl;
+        }
+
+    }
+}
+
+std::tuple<string, float, size_t> _command_init(istringstream &user_input)
+{
+    string user_name;
+    float value;
+    size_t bits;
+    user_input >> user_name;
+    user_input >> value;
+    user_input >> bits;
+    return std::make_tuple(user_name, value, bits);
 }

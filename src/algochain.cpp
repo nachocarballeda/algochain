@@ -112,24 +112,30 @@ void algochainStart(void)
         istringstream user_input(user_complete_line);
         user_input >> user_command;
         cout << "command is " << user_command << endl;
-        if (user_command == "init")
+        if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);
             Algochain algochain(value, user_name, bits);
             algochain.emit();
             algochain.getGenesisBlockHash();
         }
-        else if (user_command == "transfer")
+        else if (user_command == COMMAND_TRANSFER)
             cout << "transfer done.." << endl;
-        else if (user_command == "mine")
+        else if (user_command == COMMAND_MINE)
             cout << "minning start !" << endl;
-        else if (user_command == "balance")
+        else if (user_command == COMMAND_BALANCE)
             cout << "balance of the user is X" << endl;
-        else if (user_command == "block")
+        else if (user_command == COMMAND_BLOCK)
             cout << "block's fields are.." << endl;
-        else if (user_command == "help")
+        else if (user_command == COMMAND_TXN)
+            cout << "txn command.." << endl;
+        else if (user_command == COMMAND_LOAD)
+            cout << "loading from file.." << endl;
+        else if (user_command == COMMAND_SAVE)
+            cout << "saving to file.."
+        else if (user_command == COMMAND_HELP)
             cout << "display help file.." << endl;
-        else if (user_command == "exit")
+        else if (user_command == COMMAND_EXIT)
         {
             cout << "bye.." << endl;
             exit(0);

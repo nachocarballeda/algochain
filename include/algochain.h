@@ -11,6 +11,18 @@
 #include "../include/input.h"
 #include "../include/output.h"
 
+#define COMMAND_INIT    "init"
+#define COMMAND_BALANCE "balance"
+#define COMMAND_MINE    "mine"
+#define COMMAND_TRANSFER    "transfer"
+#define COMMAND_BLOCK   "block"
+#define COMMAND_TXN     "txn"
+#define COMMAND_LOAD    "load"
+#define COMMAND_SAVE    "save"
+#define COMMAND_HELP    "help"
+#define COMMAND_EXIT    "exit"
+
+
 class BlockNode
 {
     friend class Algochain;

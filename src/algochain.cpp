@@ -132,7 +132,7 @@ void algochainStart(void)
         else if (user_command == COMMAND_LOAD)
             cout << "loading from file.." << endl;
         else if (user_command == COMMAND_SAVE)
-            cout << "saving to file.."
+            cout << "saving to file..";
         else if (user_command == COMMAND_HELP)
             cout << "display help file.." << endl;
         else if (user_command == COMMAND_EXIT)

@@ -12,16 +12,16 @@
 #include <tuple>
 
 std::tuple<string, float, size_t> _command_init(istringstream &user_input);
+std::tuple<string> _command_balance(istringstream &user_input);
 
 Algochain ::Algochain()
 {
     _first = 0;
 }
 
-Algochain ::Algochain(float value, string user, size_t bits)
+void Algochain::init(string user, float value, size_t bits)
 {
     BlockNode *_aux1;
-
     vector<Input> initInputVec;
     vector<Output> initOutputVect;
     Output genesisOutput(sha256(user), value);
@@ -30,6 +30,8 @@ Algochain ::Algochain(float value, string user, size_t bits)
     Body genesisBody(initTxn);
     Header genesisHeader(bits);
     Block genesisBlock(genesisHeader, genesisBody);
+
+    _balance.update(user, value);
 
     _aux1 = new BlockNode(genesisBlock);
     _aux1->_data = genesisBlock;
@@ -75,7 +77,7 @@ void Algochain ::emit()
     BlockNode *aux = _first;
     while (aux)
     {
-        cout << aux->getData();
+        cout << aux->getData() << endl;
         aux = aux->getNext();
     }
 }
@@ -101,12 +103,13 @@ void algochainStart(void)
     istringstream user_input;
     string user_command;
     string user_complete_line;
-    
+
+    Algochain algochain;
     string user_name;
     float value;
     size_t bits;
 
-    while(true)
+    while (true)
     {
         getline(cin, user_complete_line);
         istringstream user_input(user_complete_line);
@@ -115,26 +118,70 @@ void algochainStart(void)
         if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);
-            Algochain algochain(value, user_name, bits);
+            algochain.init(user_name, value, bits);
             algochain.emit();
             algochain.getGenesisBlockHash();
         }
         else if (user_command == COMMAND_TRANSFER)
-            cout << "transfer done.." << endl;
+            if (algochain.isEmpty())
+                cout << "Please initialize the Algochain first" << endl;
+            else
+                cout << "transfer done.." << endl;
+
         else if (user_command == COMMAND_MINE)
-            cout << "minning start !" << endl;
+            if (algochain.isEmpty())
+                cout << "Please initialize the Algochain first" << endl;
+            else
+                cout << "minning start !" << endl;
+
         else if (user_command == COMMAND_BALANCE)
-            cout << "balance of the user is X" << endl;
+            if (algochain.isEmpty())
+                cout << "Please initialize the Algochain first" << endl;
+            else
+            {
+                tie(user_name) = _command_balance(user_input);
+                float userBalance = algochain.getBalance().getUserBalance(user_name);
+                if (userBalance == -1)
+                    cout << "User " << user_name << " does't exist in our database" << endl;
+                else
+                    cout << "Balance of " << user_name << " is: " << algochain.getBalance().getUserBalance(user_name) << endl;
+            }
+
         else if (user_command == COMMAND_BLOCK)
-            cout << "block's fields are.." << endl;
+            if (algochain.isEmpty())
+                cout
+                    << "Please initialize the Algochain first" << endl;
+            else
+                cout << "block's fields are.." << endl;
+
         else if (user_command == COMMAND_TXN)
-            cout << "txn command.." << endl;
+            if (algochain.isEmpty())
+                cout
+                    << "Please initialize the Algochain first" << endl;
+            else
+                cout << "txn command.." << endl;
+
         else if (user_command == COMMAND_LOAD)
-            cout << "loading from file.." << endl;
+            if (algochain.isEmpty())
+                cout
+                    << "Please initialize the Algochain first" << endl;
+            else
+                cout << "loading from file.." << endl;
+
         else if (user_command == COMMAND_SAVE)
-            cout << "saving to file..";
+            if (algochain.isEmpty())
+                cout
+                    << "Please initialize the Algochain first" << endl;
+            else
+                cout << "saving to file..";
+
         else if (user_command == COMMAND_HELP)
-            cout << "display help file.." << endl;
+            if (algochain.isEmpty())
+                cout
+                    << "Please initialize the Algochain first" << endl;
+            else
+                cout << "display help file.." << endl;
+
         else if (user_command == COMMAND_EXIT)
         {
             cout << "bye.." << endl;
@@ -144,8 +191,17 @@ void algochainStart(void)
         {
             cout << "Command is invalid. Write help to see all the available commands" << endl;
         }
-
     }
+}
+
+const Balance Algochain::getBalance() const
+{
+    return _balance;
+}
+
+void Algochain::emitBalance()
+{
+    cout << _balance;
 }
 
 std::tuple<string, float, size_t> _command_init(istringstream &user_input)
@@ -157,4 +213,11 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input)
     user_input >> value;
     user_input >> bits;
     return std::make_tuple(user_name, value, bits);
+}
+
+std::tuple<string> _command_balance(istringstream &user_input)
+{
+    string user_name;
+    user_input >> user_name;
+    return std::make_tuple(user_name);
 }

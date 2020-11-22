@@ -13,6 +13,8 @@
 #include "../include/output.h"
 #include "../include/balance.h"
 
+#define MSG_INIT_ALGOCHAIN_FIRST "Please init the Algochain first"
+
 #define COMMAND_INIT "init"
 #define COMMAND_BALANCE "balance"
 #define COMMAND_MINE "mine"

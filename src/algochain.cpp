@@ -139,19 +139,19 @@ void algochainStart(void)
         }
         else if (user_command == COMMAND_TRANSFER)
             if (algochain.isEmpty())
-                cout << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "transfer done.." << endl;
 
         else if (user_command == COMMAND_MINE)
             if (algochain.isEmpty())
-                cout << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "minning start !" << endl;
 
         else if (user_command == COMMAND_BALANCE)
             if (algochain.isEmpty())
-                cout << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
                 tie(user_name) = _command_balance(user_input);
@@ -164,36 +164,31 @@ void algochainStart(void)
 
         else if (user_command == COMMAND_BLOCK)
             if (algochain.isEmpty())
-                cout
-                    << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "block's fields are.." << endl;
 
         else if (user_command == COMMAND_TXN)
             if (algochain.isEmpty())
-                cout
-                    << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "txn command.." << endl;
 
         else if (user_command == COMMAND_LOAD)
             if (algochain.isEmpty())
-                cout
-                    << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "loading from file.." << endl;
 
         else if (user_command == COMMAND_SAVE)
             if (algochain.isEmpty())
-                cout
-                    << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "saving to file..";
 
         else if (user_command == COMMAND_HELP)
             if (algochain.isEmpty())
-                cout
-                    << "Please initialize the Algochain first" << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "display help file.." << endl;
 

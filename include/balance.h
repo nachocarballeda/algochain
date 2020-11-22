@@ -16,6 +16,7 @@ public:
     ~Balance();
     const float getUserBalance(const string &) const;
     const unordered_map<string, float> getData();
+    void clear();
     void update(string, float); //actualizar balance de usuarios
     const bool isEmpty();
     friend ostream &operator<<(ostream &, Balance);

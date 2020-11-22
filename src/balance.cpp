@@ -21,7 +21,7 @@ const float Balance::getUserBalance(const string &user) const
 {
     if (_data.find(user) == _data.end())
     {
-        return -1;
+        return 0;
     }
     else
         return _data.at(user);
@@ -37,6 +37,10 @@ const bool Balance::isEmpty()
     return _data.empty();
 }
 
+void Balance::clear()
+{
+    _data.clear();
+}
 void Balance::update(string user, float value)
 {
     if (_data.find(user) == _data.end())

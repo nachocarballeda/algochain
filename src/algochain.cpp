@@ -26,6 +26,7 @@ void Algochain::init(string user, float value, size_t bits)
     }
     else
     {
+        _balance.clear();
         BlockNode *_aux = _first;
         while (_first)
         {
@@ -129,13 +130,11 @@ void algochainStart(void)
         getline(cin, user_complete_line);
         istringstream user_input(user_complete_line);
         user_input >> user_command;
-        cout << "command is " << user_command << endl;
         if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);
             algochain.init(user_name, value, bits);
-            algochain.emit();
-            algochain.getGenesisBlockHash();
+            cout << algochain.getGenesisBlockHash() << endl;
         }
         else if (user_command == COMMAND_TRANSFER)
             if (algochain.isEmpty())
@@ -156,10 +155,7 @@ void algochainStart(void)
             {
                 tie(user_name) = _command_balance(user_input);
                 float userBalance = algochain.getBalance().getUserBalance(user_name);
-                if (userBalance == -1)
-                    cout << "User " << user_name << " does't exist in our database" << endl;
-                else
-                    cout << "Balance of " << user_name << " is: " << algochain.getBalance().getUserBalance(user_name) << endl;
+                cout << userBalance << endl;
             }
 
         else if (user_command == COMMAND_BLOCK)

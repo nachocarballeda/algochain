@@ -21,6 +21,21 @@ Algochain ::Algochain()
 
 void Algochain::init(string user, float value, size_t bits)
 {
+    if (this->isEmpty())
+    {
+    }
+    else
+    {
+        BlockNode *_aux = _first;
+        while (_first)
+        {
+            _first = _first->_next;
+            delete _aux;
+            _aux = _first;
+        }
+        _first = 0;
+    }
+
     BlockNode *_aux1;
     vector<Input> initInputVec;
     vector<Output> initOutputVect;

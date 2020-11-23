@@ -11,8 +11,12 @@
 #include <bitset>
 #include <tuple>
 
+using namespace std;
+
 std::tuple<string, float, size_t> _command_init(istringstream &user_input);
 std::tuple<string> _command_balance(istringstream &user_input);
+std::tuple<string, unordered_map<string, float>, float> _command_transfer(istringstream &user_input);
+std::tuple<size_t> _command_mine(istringstream &user_input);
 
 Algochain ::Algochain()
 {
@@ -38,11 +42,22 @@ void Algochain::init(string user, float value, size_t bits)
     }
 
     BlockNode *_aux1;
+
+    string genesisInputTxId(64, '0');
+    string genesisInputTxAddr(64, '0');
+
     vector<Input> initInputVec;
-    vector<Output> initOutputVect;
+    vector<Output> initOutputVec;
+
     Output genesisOutput(sha256(user), value);
-    initOutputVect.push_back(genesisOutput);
-    Txn initTxn(0, initInputVec, 1, initOutputVect);
+    Input genesisInput(genesisInputTxId, genesisInputTxAddr, 0);
+
+    initInputVec.push_back(genesisInput);
+    initOutputVec.push_back(genesisOutput);
+
+    Txn initTxn(1, initInputVec, 1, initOutputVec);
+
+    _utxos.update(user, sha256(initTxn.cat()), initTxn);
     Body genesisBody(initTxn);
     Header genesisHeader(bits);
     Block genesisBlock(genesisHeader, genesisBody);
@@ -65,6 +80,57 @@ Algochain ::~Algochain()
         delete _aux;
         _aux = _first;
     }
+}
+
+void Algochain::transfer(const string &src_user, const unordered_map<string, float> &destianations, const float &cum_sum)
+{
+    size_t dest_count = 1; // arrango en 1 para contemplar el output del src user
+    string tx_id = _utxos.getUserUtxoHash(src_user);
+    cout << tx_id << endl;
+    int idx = _utxos.findUtxoIdx(src_user);
+    cout << idx << endl;
+    string addr = sha256(src_user);
+
+    if (tx_id == "")
+        cout << "User doesn't exist" << endl;
+    else if (idx == -1)
+    {
+        cout << "ERROR FINDING IDX FOR SOURCE USER" << src_user << endl;
+    }
+    else
+    {
+        Input transferInput(tx_id, addr, idx);
+        vector<Input> transferInputVec;
+        transferInputVec.push_back(transferInput);
+
+        vector<Output> transferOutputVec;
+
+        for (const auto &n : destianations)
+        {
+            Output newOutput(sha256(n.first), n.second);
+            transferOutputVec.push_back(newOutput);
+            dest_count = dest_count + 1;
+        }
+        Output srcUserOutput(sha256(src_user), _balance.getUserBalance(src_user) - cum_sum);
+        transferOutputVec.push_back(srcUserOutput);
+        Txn new_txn(1, transferInputVec, dest_count, transferOutputVec);
+
+        unordered_map<string, float> newBalance = destianations;
+        newBalance.insert({src_user, _balance.getUserBalance(src_user) - cum_sum});
+        Balance mempoolBalance(newBalance);
+        _mempool.setNewBalance(mempoolBalance);
+        _mempool.addTxn(new_txn);
+    }
+}
+
+void Algochain ::mine(const size_t &bits)
+{
+    Body newBody(_mempool.getNewTxns());
+    Header newHeader(bits);
+    _balance = _mempool.getNewBalance();
+    Block newBlock(newHeader, newBody);
+    newBlock.updateTxnsHash();
+    this->addBlock(newBlock);
 }
 
 void Algochain ::addBlock(Block _b)
@@ -137,20 +203,37 @@ void algochainStart(void)
             cout << algochain.getGenesisBlockHash() << endl;
         }
         else if (user_command == COMMAND_TRANSFER)
+        {
+            string src_user;
+            unordered_map<string, float> dest;
+            float cum_sum;
             if (algochain.isEmpty())
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "transfer done.." << endl;
+            {
+                tie(src_user, dest, cum_sum) = _command_transfer(user_input);
+                if (cum_sum == -1 || algochain.getBalance().getUserBalance(src_user) < cum_sum)
+                    cout << "Invalid transfer" << endl;
+                else
+                {
+                    algochain.transfer(src_user, dest, cum_sum);
+                }
+            }
+        }
 
         else if (user_command == COMMAND_MINE)
             if (algochain.isEmpty())
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "minning start !" << endl;
+            {
+                tie(bits) = _command_mine(user_input);
+                algochain.mine(bits);
+            }
 
         else if (user_command == COMMAND_BALANCE)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
                 tie(user_name) = _command_balance(user_input);
@@ -160,31 +243,36 @@ void algochainStart(void)
 
         else if (user_command == COMMAND_BLOCK)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "block's fields are.." << endl;
 
         else if (user_command == COMMAND_TXN)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "txn command.." << endl;
 
         else if (user_command == COMMAND_LOAD)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "loading from file.." << endl;
 
         else if (user_command == COMMAND_SAVE)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "saving to file..";
 
         else if (user_command == COMMAND_HELP)
             if (algochain.isEmpty())
-                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout
+                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
                 cout << "display help file.." << endl;
 
@@ -226,4 +314,39 @@ std::tuple<string> _command_balance(istringstream &user_input)
     string user_name;
     user_input >> user_name;
     return std::make_tuple(user_name);
+}
+
+std::tuple<size_t> _command_mine(istringstream &user_input)
+{
+    size_t bits;
+    user_input >> bits;
+    return std::make_tuple(bits);
+}
+
+//Devuelve el nombre del source, un diccionario con los nombres y
+//valores para el destino y un float con la suma acumulada de lo que se tiene que transferir
+
+std::tuple<string, unordered_map<string, float>, float> _command_transfer(istringstream &user_input)
+{
+    string src_user;
+    user_input >> src_user;
+    unordered_map<string, float> dest;
+    float cum_sum = 0;
+    while (!user_input.eof())
+    {
+        string user_name;
+        float value;
+        user_input >> user_name;
+        user_input >> value;
+        cum_sum = cum_sum + value;
+        dest.insert({user_name, value});
+        if (user_input.fail())
+        {
+            dest.clear();
+            src_user = "";
+            cum_sum = -1;
+            return std::make_tuple(src_user, dest, cum_sum);
+        }
+    }
+    return std::make_tuple(src_user, dest, cum_sum);
 }

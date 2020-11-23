@@ -7,6 +7,7 @@
 #include "../include/output.h"
 #include "../include/input.h"
 #include "../include/outpoint.h"
+#include "../include/sha256.h"
 
 using namespace std;
 
@@ -21,6 +22,8 @@ public:
     vector<Output> getOutputs();
     void addInput(Input);
     void addOutput(Output);
+    const int findIdx(const string &);
+    string cat();
 
 private:
     size_t _n_tx_in;

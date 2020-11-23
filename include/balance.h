@@ -13,11 +13,13 @@ class Balance
 public:
     Balance();
     Balance(string, float);
+    Balance(unordered_map<string, float>);
     ~Balance();
     const float getUserBalance(const string &) const;
     const unordered_map<string, float> getData();
     void clear();
     void update(string, float); //actualizar balance de usuarios
+    void operator=(const Balance &);
     const bool isEmpty();
     friend ostream &operator<<(ostream &, Balance);
 

@@ -36,6 +36,16 @@ vector<Output> Txn::getOutputs()
     return _outputs;
 }
 
+const int Txn::findIdx(const string &user)
+{
+    for (size_t i = 0; i < _n_tx_out; i++)
+    {
+        if (_outputs[i].getAddr() == sha256(user))
+            return i + 1;
+    }
+    return 0;
+}
+
 void Txn::addInput(Input newInput)
 {
     _inputs.push_back(newInput);
@@ -46,4 +56,33 @@ void Txn::addOutput(Output newOutput)
 {
     _outputs.push_back(newOutput);
     _n_tx_out = _n_tx_out + 1;
+}
+
+string Txn::cat()
+{
+    string concatTxns = "";
+
+    concatTxns.append(to_string(this->getNTxIn()));
+    concatTxns.append("\n");
+    for (size_t j = 0; j < this->getNTxIn(); ++j)
+    {
+        concatTxns.append((this->getInputs())[j].getAddr());
+        concatTxns.append(" ");
+        concatTxns.append(to_string((this->getInputs())[j].getOutpointIdx()));
+        concatTxns.append(" ");
+        concatTxns.append((this->getInputs())[j].getOutpointTxId());
+        concatTxns.append("\n");
+    }
+    concatTxns.append(to_string(this->getNTxOut()));
+    concatTxns.append("\n");
+
+    for (size_t j = 0; j < this->getNTxOut(); ++j)
+    {
+        concatTxns.append(to_string((this->getOutputs())[j].getValue()));
+        concatTxns.append(" ");
+        concatTxns.append((this->getOutputs())[j].getAddr());
+        if (j != this->getNTxOut() - 1)
+            concatTxns.append("\n");
+    }
+    return concatTxns;
 }

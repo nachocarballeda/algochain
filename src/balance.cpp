@@ -13,6 +13,11 @@ Balance::Balance(string user, float value)
     _data.insert({user, value});
 }
 
+Balance::Balance(unordered_map<string, float> newBalance)
+{
+    _data = newBalance;
+}
+
 Balance::~Balance()
 {
 }
@@ -59,4 +64,9 @@ ostream &operator<<(ostream &os, Balance b)
     }
 
     return os << oss.str() << endl;
+}
+
+void Balance::operator=(const Balance &b)
+{
+    _data = b._data;
 }

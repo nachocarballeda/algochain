@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <unordered_map>
+#include <queue>
 #include "../include/error.h"
 #include "../include/body.h"
 #include "../include/block.h"
@@ -12,6 +13,8 @@
 #include "../include/input.h"
 #include "../include/output.h"
 #include "../include/balance.h"
+#include "../include/utxos.h"
+#include "../include/mempool.h"
 
 #define MSG_INIT_ALGOCHAIN_FIRST "Please init the Algochain first"
 
@@ -52,6 +55,8 @@ public:
     ~Algochain();
     void init(string, float, size_t);
     const Balance getBalance() const;
+    void transfer(const string &, const unordered_map<string, float> &, const float &);
+    void mine(const size_t &bits);
     void addBlock(Block);              //alta al final
     void updateBalance(string, float); //actualizar balance de usuarios
     void emitBalance();
@@ -62,6 +67,8 @@ public:
 private:
     BlockNode *_first;
     Balance _balance;
+    Utxos _utxos;
+    Mempool _mempool;
 };
 
 void algochainStart(void);

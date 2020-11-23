@@ -10,7 +10,7 @@ Header::Header()
     _txns_hash = "";
 }
 
-Header::Header(size_t &b)
+Header::Header(const size_t &b)
 {
     _bits = b;
     _txns_hash = "";

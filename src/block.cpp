@@ -135,7 +135,7 @@ void Block::print()
 
 void Block::writeToFile(string filepath)
 {
-    if(filepath[0]!='-')
+    if (filepath[0] != '-')
     {
         ofstream block_file(filepath);
         if (!block_file.good())
@@ -144,7 +144,7 @@ void Block::writeToFile(string filepath)
             return;
         }
         block_file << _header.cat()
-                << _body.cat();
+                   << _body.cat();
 
         if (!block_file.good())
         {
@@ -187,10 +187,8 @@ Body const &Block::getBody() const
 
 void Block::updateTxnsHash()
 {
-
     string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
-
     proofOfWork();
 }
 

@@ -51,10 +51,7 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream inputStream(line);
         if (line.length() == 0)
-        {
-            showWarning(MSG_WARNING_TXN_FILE_IS_EMPTY);
             return;
-        }
         inputStream >> n_tx_in;
         if (n_tx_in < 1)
         {

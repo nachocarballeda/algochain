@@ -94,7 +94,7 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
-        if (n_tx_out >= n_tx_in || outputStream.fail())
+        if (n_tx_out > n_tx_in || outputStream.fail())
         {
             showError(MSG_ERROR_INVALID_N_TX_OUT);
             return;

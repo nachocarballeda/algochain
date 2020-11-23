@@ -19,6 +19,12 @@ void opt_set_difficulty(string const &arg)
 {
 	char *pEnd;
 	_difficulty = strtol(arg.c_str(), &pEnd, 10);
+
+    if(_difficulty > 100)
+    {
+        showWarning(MSG_WARNING_DIFFICULTY_INVALID);
+        _difficulty = 0;
+    }
 }
 
 void opt_set_output(string const &arg)

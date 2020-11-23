@@ -199,9 +199,9 @@ void Block::proofOfWork()
 
     size_t count = 0;
     bitset<4> c;
-    bool flag = true;
+    bool _minning = true;
 
-    while (flag)
+    while (_minning)
     {
 
         string s = _header.cat();
@@ -254,7 +254,7 @@ void Block::proofOfWork()
 
             if (count >= d)
             { //Si el count es mayor o igual a la dificultad
-                flag = false;
+                _minning = false;
                 break; //Salgo del ciclo.
             }
         }

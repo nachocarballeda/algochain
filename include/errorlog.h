@@ -21,6 +21,8 @@ using namespace std;
 
 // Warning msgs
 #define MSG_WARNING_TXN_FILE_IS_EMPTY "Transaction file is empty"
+#define MSG_WARNING_DIFFICULTY_INVALID "Difficulty is invalid, using default: d=0"
+
 void showError(string err);
 void showError(string err, string detail);
 void showWarning(string);

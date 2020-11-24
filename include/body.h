@@ -2,10 +2,10 @@
 #define _BODY_H_
 
 #include <cstdlib>
-#include <vector>
 
 #include "../include/txn.h"
 #include "../include/sha256.h"
+#include "../include/algovector.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ public:
 
 private:
     size_t _txn_count;
-    vector<Txn> _txns;
+    algoVector<Txn> _txns;
 };
 
 #endif /** _BODY_H_ */

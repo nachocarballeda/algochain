@@ -1,8 +1,8 @@
 #include "../include/body.h"
 #include "../include/txn.h"
+#include "../include/algovector.h"
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 

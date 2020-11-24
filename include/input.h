@@ -2,10 +2,10 @@
 #define _INPUTS_H_
 
 #include <cstdlib>
-#include <vector>
 #include <string>
 
 #include "../include/outpoint.h"
+#include "../include/algovector.h"
 
 using namespace std;
 

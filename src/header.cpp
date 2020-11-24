@@ -75,7 +75,6 @@ void Header::incrementNonce()
 
 string Header::cat()
 {
-
     string s = "";
 
     s += _prev_block;

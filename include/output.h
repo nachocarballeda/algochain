@@ -2,7 +2,6 @@
 #define _OUTPUTS_H_
 
 #include <cstdlib>
-#include <vector>
 #include <string>
 using namespace std;
 

@@ -15,6 +15,7 @@ public:
     Body();
     Body(vector<Txn> Txns);
     Body(Txn);
+    ~Body();
     size_t getTxnCount(void);
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);

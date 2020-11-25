@@ -10,6 +10,7 @@ class Outpoint
 public:
     Outpoint();
     Outpoint(string, size_t);
+    ~Outpoint();
     string getTxId();
     size_t getIdx();
 

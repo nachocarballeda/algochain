@@ -14,6 +14,7 @@ class Input
 public:
     Input();
     Input(string, string, size_t);
+    ~Input();
     string getAddr();
     string getOutpointTxId();
     size_t getOutpointIdx();

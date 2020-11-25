@@ -16,6 +16,7 @@ class Txn
 public:
     Txn(); //default
     Txn(size_t, algoVector<Input>, size_t, algoVector<Output>);
+    ~Txn();
     size_t getNTxIn();
     algoVector<Input> getInputs();
     size_t getNTxOut();

@@ -14,6 +14,10 @@ Output::Output(string a, float v)
     value = v;
 }
 
+Output::~Output()
+{
+}
+
 string Output::getAddr()
 {
     return addr;

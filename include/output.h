@@ -10,6 +10,7 @@ class Output
 public:
     Output();
     Output(string, float);
+    ~Output();
     string getAddr();
     size_t getValue();
 

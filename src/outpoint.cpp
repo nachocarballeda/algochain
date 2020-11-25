@@ -14,6 +14,10 @@ Outpoint::Outpoint(string t, size_t id)
     idx = id;
 };
 
+Outpoint::~Outpoint()
+{
+}
+
 string Outpoint::getTxId()
 {
     return tx_id;

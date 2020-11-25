@@ -6,6 +6,10 @@
 
 using namespace std;
 
+Body::~Body(void)
+{
+}
+
 Body::Body(void)
 {
     _txn_count = 0;

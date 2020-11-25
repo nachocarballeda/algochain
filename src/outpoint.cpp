@@ -6,7 +6,6 @@ using namespace std;
 
 Outpoint::Outpoint()
 {
-    cout << "Outpoints Constructor was called." << endl;
 }
 
 Outpoint::Outpoint(string t, size_t id)

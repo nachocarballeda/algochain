@@ -2,7 +2,6 @@
 #define _OUTPOINT_H_
 
 #include <cstdlib>
-#include <vector>
 #include <string>
 using namespace std;
 

@@ -6,7 +6,6 @@ using namespace std;
 
 Input::Input()
 {
-    cout << "Inputs Constructor was called." << endl;
 }
 
 Input::Input(string a, string tx_id, size_t idx) : _outpoint(tx_id, idx)

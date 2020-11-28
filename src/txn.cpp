@@ -1,7 +1,7 @@
+#include "../include/algovector.h"
 #include "../include/txn.h"
 #include "../include/output.h"
 #include "../include/input.h"
-#include "../include/algovector.h"
 
 #include <iostream>
 

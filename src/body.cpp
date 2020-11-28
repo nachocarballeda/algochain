@@ -1,6 +1,6 @@
+#include "../include/algovector.h"
 #include "../include/body.h"
 #include "../include/txn.h"
-#include "../include/algovector.h"
 
 #include <iostream>
 

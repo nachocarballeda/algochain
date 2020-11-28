@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <unordered_map>
+#include "../include/algovector.h"
 #include "../include/error.h"
 
 using namespace std;

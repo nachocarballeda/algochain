@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <string>
 
-#include "../include/outpoint.h"
 #include "../include/algovector.h"
+#include "../include/outpoint.h"
 
 using namespace std;
 

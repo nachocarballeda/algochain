@@ -1,3 +1,4 @@
+#include "../include/algovector.h"
 #include "../include/block.h"
 #include "../include/body.h"
 #include "../include/header.h"
@@ -5,7 +6,6 @@
 #include "../include/txn.h"
 #include "../include/sha256.h"
 #include "../include/error.h"
-#include "../include/algovector.h"
 #include "../include/algochain.h"
 #include <iostream>
 #include <string>

@@ -5,10 +5,10 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "../include/algovector.h"
 #include "../include/txn.h"
 #include "../include/error.h"
 #include "../include/balance.h"
-#include "../include/algovector.h"
 
 using namespace std;
 

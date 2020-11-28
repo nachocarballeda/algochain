@@ -5,6 +5,7 @@
 #include <sstream>
 #include <unordered_map>
 #include <queue>
+#include "../include/algovector.h"
 #include "../include/error.h"
 #include "../include/body.h"
 #include "../include/block.h"

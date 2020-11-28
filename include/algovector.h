@@ -154,6 +154,13 @@ unsigned int algoVector<T>::size()const//
 }
 
 template<class T>
+bool algoVector<T>::empty()const//
+{
+    return (buffer == 0);
+}
+
+
+template<class T>
 void algoVector<T>::resize(unsigned int size)
 {
     reserve(size);

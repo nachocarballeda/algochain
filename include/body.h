@@ -3,9 +3,9 @@
 
 #include <cstdlib>
 
+#include "../include/algovector.h"
 #include "../include/txn.h"
 #include "../include/sha256.h"
-#include "../include/algovector.h"
 
 using namespace std;
 

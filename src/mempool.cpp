@@ -1,7 +1,7 @@
+#include "../include/algovector.h"
 #include "../include/balance.h"
 #include "../include/error.h"
 #include "../include/mempool.h"
-#include "../include/algovector.h"
 
 #include <iostream>
 #include <string>

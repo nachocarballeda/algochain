@@ -3,11 +3,11 @@
 
 #include <cstdlib>
 
+#include "../include/algovector.h"
 #include "../include/output.h"
 #include "../include/input.h"
 #include "../include/outpoint.h"
 #include "../include/sha256.h"
-#include "../include/algovector.h"
 
 using namespace std;
 

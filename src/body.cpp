@@ -21,7 +21,7 @@ Body::Body(Txn newTxn)
     _txn_count = 1;
 }
 
-Body::Body(vector<Txn> Txns)
+Body::Body(algoVector<Txn> Txns)
 {
     _txns = Txns;
     _txn_count = Txns.size();

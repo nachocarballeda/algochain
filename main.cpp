@@ -6,6 +6,7 @@
 #include <tuple>
 #include <unordered_map>
 
+#include "include/algovector.h"
 #include "include/algochain.h"
 #include "include/body.h"
 #include "include/header.h"

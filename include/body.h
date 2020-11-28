@@ -13,7 +13,7 @@ class Body
 {
 public:
     Body();
-    Body(vector<Txn> Txns);
+    Body(algoVector<Txn> Txns);
     Body(Txn);
     ~Body();
     size_t getTxnCount(void);

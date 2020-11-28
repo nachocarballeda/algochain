@@ -5,6 +5,7 @@
 #include "../include/txn.h"
 #include "../include/sha256.h"
 #include "../include/error.h"
+#include "../include/algovector.h"
 #include "../include/algochain.h"
 #include <iostream>
 #include <string>
@@ -46,8 +47,8 @@ void Algochain::init(string user, float value, size_t bits)
     string genesisInputTxId(64, '0');
     string genesisInputTxAddr(64, '0');
 
-    vector<Input> initInputVec;
-    vector<Output> initOutputVec;
+    algoVector<Input> initInputVec;
+    algoVector<Output> initOutputVec;
 
     Output genesisOutput(sha256(user), value);
     Input genesisInput(genesisInputTxId, genesisInputTxAddr, 0);
@@ -100,10 +101,10 @@ void Algochain::transfer(const string &src_user, const unordered_map<string, flo
     else
     {
         Input transferInput(tx_id, addr, idx);
-        vector<Input> transferInputVec;
+        algoVector<Input> transferInputVec;
         transferInputVec.push_back(transferInput);
 
-        vector<Output> transferOutputVec;
+        algoVector<Output> transferOutputVec;
 
         for (const auto &n : destianations)
         {

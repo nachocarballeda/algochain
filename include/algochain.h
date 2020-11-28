@@ -29,6 +29,15 @@
 #define COMMAND_SAVE "save"
 #define COMMAND_HELP "help"
 #define COMMAND_EXIT "exit"
+#define COMMAND_REPLY_TO_HELP "\
+    init <user> <value> <bits>\n\
+    transfer <src> <dst1> <value1> ... <dstN> <valueN>\n\
+    mine <bits>\n\
+    balance <user>\n\
+    block <id>\n\
+    txn <id>\n\
+    load <filename>\n\
+    save <filename>\n"
 
 class BlockNode
 {

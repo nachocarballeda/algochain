@@ -281,11 +281,7 @@ void algochainStart(void)
                 cout << "saving to file..";
 
         else if (user_command == COMMAND_HELP)
-            if (algochain.isEmpty())
-                cout
-                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
-            else
-                cout << "display help file.." << endl;
+            cout << COMMAND_REPLY_TO_HELP << endl;
 
         else if (user_command == COMMAND_EXIT)
         {
@@ -293,9 +289,7 @@ void algochainStart(void)
             exit(0);
         }
         else
-        {
             cout << "Command is invalid. Write help to see all the available commands" << endl;
-        }
     }
 }
 

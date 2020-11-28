@@ -1,6 +1,8 @@
+#include "../include/algovector.h"
 #include "../include/balance.h"
 #include "../include/error.h"
 #include "../include/mempool.h"
+
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -9,7 +11,7 @@ Mempool::Mempool()
 {
 }
 
-Mempool::Mempool(const vector<Txn> &txns, Balance b)
+Mempool::Mempool(const algoVector<Txn> &txns, Balance b)
 {
     _newTxns = txns;
     _newBalance = b;
@@ -19,7 +21,7 @@ Mempool::~Mempool()
 {
 }
 
-void Mempool::update(const vector<Txn> &txns, Balance b)
+void Mempool::update(const algoVector<Txn> &txns, Balance b)
 {
     _newTxns = txns;
     _newBalance = b;
@@ -38,7 +40,7 @@ void Mempool::addTxn(const Txn txn)
 void Mempool::clear()
 {
     Balance aux;
-    vector<Txn> aux_txn;
+    algoVector<Txn> aux_txn;
     _newTxns = aux_txn;
     _newBalance = aux;
 }
@@ -48,7 +50,7 @@ const Balance &Mempool::getNewBalance() const
     return _newBalance;
 }
 
-const vector<Txn> &Mempool::getNewTxns() const
+const algoVector<Txn> &Mempool::getNewTxns() const
 {
     return _newTxns;
 }

@@ -2,7 +2,6 @@
 #define _OUTPOINT_H_
 
 #include <cstdlib>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -11,6 +10,7 @@ class Outpoint
 public:
     Outpoint();
     Outpoint(string, size_t);
+    ~Outpoint();
     string getTxId();
     size_t getIdx();
 

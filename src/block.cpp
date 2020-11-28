@@ -51,10 +51,7 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream inputStream(line);
         if (line.length() == 0)
-        {
-            showWarning(MSG_WARNING_TXN_FILE_IS_EMPTY);
             return;
-        }
         inputStream >> n_tx_in;
         if (n_tx_in < 1)
         {
@@ -94,7 +91,7 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
-        if (n_tx_out >= n_tx_in || outputStream.fail())
+        if (n_tx_out > n_tx_in || outputStream.fail())
         {
             showError(MSG_ERROR_INVALID_N_TX_OUT);
             return;
@@ -202,9 +199,9 @@ void Block::proofOfWork()
 
     size_t count = 0;
     bitset<4> c;
-    bool flag = true;
+    bool _minning = true;
 
-    while (flag)
+    while (_minning)
     {
 
         string s = _header.cat();
@@ -214,30 +211,20 @@ void Block::proofOfWork()
         for (size_t j = 0; j < 32; j++)
         { //Reviso los 32 bytes del hash.
 
-            if ((h[j] - 48) > 48)
-            { //Si esta entre a-f
-
+            if ((h[j] - 48) > 48)   //Si esta entre a-f
                 c = (h[j] - 87);
-            }
-            else
-            { //Si esta entre 0-9
-
+            else                    //Si esta entre 0-9
                 c = (h[j] - 48);
-            }
 
             size_t i = 0;
 
             /*
                 Pruebo que cada bit sea 0. El bit c[0] = LSb y c[3] = MSb
             */
-            for (; i < 4; i++)
+            for ( ;i < 4; i++)
             {
-
                 if (c[3 - i] != 0)
-                {
                     break;
-                }
-
                 count++;
             }
 
@@ -257,7 +244,7 @@ void Block::proofOfWork()
 
             if (count >= d)
             { //Si el count es mayor o igual a la dificultad
-                flag = false;
+                _minning = false;
                 break; //Salgo del ciclo.
             }
         }

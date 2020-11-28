@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "../include/algovector.h"
 #include "../include/errorlog.h"
 #include "../include/body.h"
 #include "../include/header.h"

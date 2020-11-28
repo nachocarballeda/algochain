@@ -2,7 +2,6 @@
 #define _OUTPUTS_H_
 
 #include <cstdlib>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -11,6 +10,7 @@ class Output
 public:
     Output();
     Output(string, float);
+    ~Output();
     string getAddr();
     size_t getValue();
 

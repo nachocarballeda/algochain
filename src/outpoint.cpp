@@ -6,7 +6,6 @@ using namespace std;
 
 Outpoint::Outpoint()
 {
-    cout << "Outpoints Constructor was called." << endl;
 }
 
 Outpoint::Outpoint(string t, size_t id)
@@ -14,6 +13,10 @@ Outpoint::Outpoint(string t, size_t id)
     tx_id = t;
     idx = id;
 };
+
+Outpoint::~Outpoint()
+{
+}
 
 string Outpoint::getTxId()
 {

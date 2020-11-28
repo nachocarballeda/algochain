@@ -6,6 +6,7 @@ all: algochain
 
 algochain: main.o sha256.o cmdline.o algochain.o block.o body.o header.o txn.o \
 	input.o output.o outpoint.o errorlog.o arghandler.o balance.o utxos.o mempool.o
+	
 	$(CC) $(CCFLAGS) -o algochain.bin build/main.o build/sha256.o \
 	build/cmdline.o build/txn.o build/algochain.o build/block.o build/body.o build/header.o \
 	build/input.o build/output.o build/outpoint.o build/errorlog.o \
@@ -58,6 +59,6 @@ utxos.o:  src/utxos.cpp include/utxos.h
 
 mempool.o:  src/mempool.cpp include/mempool.h
 	$(CC) $(CCFLAGS) -c src/mempool.cpp -o build/mempool.o
-
+	
 clean:
 	$(RM) build/*.o algochain

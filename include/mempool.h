@@ -5,6 +5,7 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "../include/algovector.h"
 #include "../include/txn.h"
 #include "../include/error.h"
 #include "../include/balance.h"
@@ -15,19 +16,19 @@ class Mempool
 {
 public:
     Mempool();
-    Mempool(const vector<Txn> &, Balance);
+    Mempool(const algoVector<Txn> &, Balance);
     ~Mempool();
 
     const Balance &getNewBalance() const;
-    const vector<Txn> &getNewTxns() const;
+    const algoVector<Txn> &getNewTxns() const;
 
     void addTxn(const Txn txn);
     void setNewBalance(const Balance);
-    void update(const vector<Txn> &, Balance);
+    void update(const algoVector<Txn> &, Balance);
     void clear();
 
 private:
-    vector<Txn> _newTxns;
+    algoVector<Txn> _newTxns;
     Balance _newBalance;
 };
 

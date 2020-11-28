@@ -1,3 +1,4 @@
+#include "../include/algovector.h"
 #include "../include/txn.h"
 #include "../include/output.h"
 #include "../include/input.h"
@@ -12,26 +13,34 @@ Txn::Txn()
     _n_tx_out = 0;
 }
 
-Txn::Txn(size_t nti, vector<Input> in, size_t nto, vector<Output> out)
+Txn::Txn(size_t nti, algoVector<Input> in, size_t nto, algoVector<Output> out)
 {
     _n_tx_in = nti;
     _inputs = in;
     _n_tx_out = nto;
     _outputs = out;
 }
+
+Txn::~Txn()
+{
+}
+
 size_t Txn::getNTxIn()
 {
     return _n_tx_in;
 }
-vector<Input> Txn::getInputs()
+
+algoVector<Input> Txn::getInputs()
 {
     return _inputs;
 }
+
 size_t Txn::getNTxOut()
 {
     return _n_tx_out;
 }
-vector<Output> Txn::getOutputs()
+
+algoVector<Output> Txn::getOutputs()
 {
     return _outputs;
 }

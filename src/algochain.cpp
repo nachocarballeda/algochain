@@ -164,6 +164,11 @@ void Algochain ::emit()
     }
 }
 
+const Mempool &Algochain::getMempool()
+{
+    return _mempool;
+}
+
 string Algochain ::getGenesisBlockHash()
 {
     if (isEmpty())
@@ -227,7 +232,12 @@ void algochainStart(void)
             else
             {
                 tie(bits) = _command_mine(user_input);
-                algochain.mine(bits);
+                if (algochain.getMempool().getNewTxns().empty())
+                    cout << "There are no Txns to mine" << endl;
+                else
+                {
+                    algochain.mine(bits);
+                }
             }
 
         else if (user_command == COMMAND_BALANCE)
@@ -306,7 +316,22 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input)
     user_input >> user_name;
     user_input >> value;
     user_input >> bits;
-    return std::make_tuple(user_name, value, bits);
+    if (bits <= 0)
+    {
+        cout << "Please, insert a valid number of bits" << endl;
+    }
+    else if (value <= 0)
+    {
+        cout << "Invalid number of Algocoins" << endl;
+    }
+    else if (user_input.fail())
+    {
+        cout << "Initialization fail" << endl;
+    }
+    else
+    {
+        return std::make_tuple(user_name, value, bits);
+    }
 }
 
 std::tuple<string> _command_balance(istringstream &user_input)
@@ -320,7 +345,14 @@ std::tuple<size_t> _command_mine(istringstream &user_input)
 {
     size_t bits;
     user_input >> bits;
-    return std::make_tuple(bits);
+    if (user_input.fail() || bits <= 0)
+    {
+        cout << "Please, insert a valid number of bits" << endl;
+    }
+    else
+    {
+        return std::make_tuple(bits);
+    }
 }
 
 //Devuelve el nombre del source, un diccionario con los nombres y

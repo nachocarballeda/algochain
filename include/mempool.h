@@ -17,10 +17,12 @@ public:
     Mempool();
     Mempool(const vector<Txn> &, Balance);
     ~Mempool();
+
+    const Balance &getNewBalance() const;
+    const vector<Txn> &getNewTxns() const;
+
     void addTxn(const Txn txn);
     void setNewBalance(const Balance);
-    const Balance getNewBalance();
-    const vector<Txn> getNewTxns();
     void update(const vector<Txn> &, Balance);
     void clear();
 

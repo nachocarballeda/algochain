@@ -43,12 +43,12 @@ void Mempool::clear()
     _newBalance = aux;
 }
 
-const Balance Mempool::getNewBalance()
+const Balance &Mempool::getNewBalance() const
 {
     return _newBalance;
 }
 
-const vector<Txn> Mempool::getNewTxns()
+const vector<Txn> &Mempool::getNewTxns() const
 {
     return _newTxns;
 }

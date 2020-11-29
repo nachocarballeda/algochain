@@ -80,6 +80,7 @@ public:
     void emitBalance();
     void emit(); //emite la lista. Escribirla
 
+    void load(const string);
     const string cat() const;
     bool isEmpty() const; //retorna true si lista vacia
 

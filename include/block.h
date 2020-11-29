@@ -21,7 +21,7 @@ public:
     Block();
     Block(const Header &, const Body &);
     Block(const Block &);
-    Block(const string);
+    Block(ifstream &);
     ~Block();
 
     const Header &getHeader() const;
@@ -32,7 +32,7 @@ public:
     void setBody(const Body &);
     void setDifficulty(const size_t &);
     void updateTxnsHash();
-    void loadTxn(const string);
+    void load(ifstream &);
     void writeToFile(const string);
 
     friend std::ostream &operator<<(std::ostream &, Block);

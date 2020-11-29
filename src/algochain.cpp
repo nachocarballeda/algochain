@@ -310,23 +310,18 @@ void algochainStart(void)
             }
 
         else if (user_command == COMMAND_LOAD)
-            if (algochain.isEmpty())
-                cout
-                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
+        {
+
+            string file_name;
+            tie(file_name) = _command_load(user_input);
+            if (file_name == "")
+                ;
+
             else
             {
-                string file_name;
-                tie(file_name) = _command_txn(user_input);
-                if (file_name == "")
-                    ;
-
-                else
-                {
-                    ofstream ofs(file_name);
-                    ofs << algochain.cat() << endl;
-                    ofs.close();
-                }
+                algochain.load(file_name);
             }
+        }
 
         else if (user_command == COMMAND_SAVE)
             if (algochain.isEmpty())
@@ -348,7 +343,8 @@ void algochainStart(void)
             }
 
         else if (user_command == COMMAND_HELP)
-            cout << COMMAND_REPLY_TO_HELP << endl;
+            cout
+                << COMMAND_REPLY_TO_HELP << endl;
 
         else if (user_command == COMMAND_EXIT)
         {
@@ -380,6 +376,18 @@ const string Algochain::cat() const
     }
     return algochain_cat;
 }
+
+void Algochain::load(const string file_path)
+{
+    ifstream algochain_file(file_path);
+
+    while (!algochain_file.eof())
+    {
+        Block newBlock(algochain_file);
+        addBlock(newBlock);
+    }
+}
+
 ostream &operator<<(ostream &os, Algochain algochain)
 {
     return os << algochain.cat();

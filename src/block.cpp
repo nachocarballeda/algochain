@@ -28,27 +28,26 @@ Block::~Block()
 {
 }
 
-Block::Block(string filepath)
+Block::Block(ifstream &algochain)
 {
-    loadTxn(filepath);
+    load(algochain);
 }
 
-void Block::loadTxn(const string filepath)
+void Block::load(ifstream &algochain_file)
 {
-    ifstream txns_file(filepath);
     Txn newTxn;
-    if (!txns_file.good())
+    if (!algochain_file.good())
     {
         showError(MSG_ERROR_INVALID_FILEPATH);
         return;
     }
 
-    while (!txns_file.eof())
+    while (!algochain_file.eof())
     {
         string line;
         int n_tx_in = 0;
         int n_tx_out = 0;
-        getline(txns_file, line);
+        getline(algochain_file, line);
         istringstream inputStream(line);
         if (line.length() == 0)
             return;
@@ -61,7 +60,7 @@ void Block::loadTxn(const string filepath)
 
         for (int i = 0; i < n_tx_in; ++i)
         {
-            getline(txns_file, line);
+            getline(algochain_file, line);
             istringstream input_data(line);
             string tx_id;
             int id_x;
@@ -88,7 +87,7 @@ void Block::loadTxn(const string filepath)
             newTxn.addInput(newInput);
         }
 
-        getline(txns_file, line);
+        getline(algochain_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
         if (n_tx_out > n_tx_in || outputStream.fail())
@@ -99,7 +98,7 @@ void Block::loadTxn(const string filepath)
         for (int i = 0; i < n_tx_out; ++i)
         {
 
-            getline(txns_file, line);
+            getline(algochain_file, line);
             istringstream output_data(line);
             float value;
             string addr;
@@ -121,7 +120,6 @@ void Block::loadTxn(const string filepath)
 
         _body.addTxn(newTxn);
     }
-    txns_file.close();
 }
 
 void Block::writeToFile(string filepath)

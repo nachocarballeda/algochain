@@ -24,8 +24,8 @@ public:
         _tx_hash = tx_hash;
         _txn = tx;
     }
-    const string &getTxnHash() { return _tx_hash; }
-    const Txn getTxn() { return _txn; }
+    const string &getTxnHash() const { return _tx_hash; }
+    const Txn getTxn() const { return _txn; }
 
 private:
     string _tx_hash;
@@ -37,11 +37,11 @@ class Utxos
 public:
     Utxos();
     ~Utxos();
-    const unordered_map<string, string> getData();
-    const string &getUserUtxoHash(const string &) const;
-    const size_t findUtxoIdx(const string &);
+    const unordered_map<string, string> &getData() const;
+    const string getUserUtxoHash(const string &) const;
+    const size_t findUtxoIdx(const string &) const;
 
-    const bool isEmpty();
+    const bool isEmpty() const;
 
     void clear();
 

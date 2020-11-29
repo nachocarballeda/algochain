@@ -25,22 +25,22 @@ Txn::~Txn()
 {
 }
 
-size_t Txn::getNTxIn()
+const size_t &Txn::getNTxIn() const
 {
     return _n_tx_in;
 }
 
-algoVector<Input> Txn::getInputs()
+const algoVector<Input> &Txn::getInputs() const
 {
     return _inputs;
 }
 
-size_t Txn::getNTxOut()
+const size_t &Txn::getNTxOut() const
 {
     return _n_tx_out;
 }
 
-algoVector<Output> Txn::getOutputs()
+const algoVector<Output> &Txn::getOutputs() const
 {
     return _outputs;
 }

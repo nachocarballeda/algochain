@@ -29,7 +29,7 @@ public:
     void reserve(unsigned int capacity);
     void resize(unsigned int size);
 
-    T &operator[](unsigned int index);
+    T &operator[](unsigned int index) const;
     algoVector<T> &operator=(const algoVector<T> &);
     void clear();
 
@@ -167,7 +167,7 @@ void algoVector<T>::resize(unsigned int size)
 }
 
 template <class T>
-T &algoVector<T>::operator[](unsigned int index)
+T &algoVector<T>::operator[](unsigned int index) const
 {
     return buffer[index];
 }

@@ -24,17 +24,16 @@ public:
     Block(const string);
     ~Block();
 
-    string cat();
+    const Header &getHeader() const;
+    const Body &getBody() const;
+    const string cat() const;
+
     void setHeader(const Header &);
     void setBody(const Body &);
     void setDifficulty(const size_t &);
-    Header const &getHeader() const;
-    Body &getBody();
     void updateTxnsHash();
-
     void loadTxn(const string);
     void writeToFile(const string);
-    void print();
 
     friend std::ostream &operator<<(std::ostream &, Block);
 

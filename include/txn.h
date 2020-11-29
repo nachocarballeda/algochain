@@ -17,10 +17,12 @@ public:
     Txn(); //default
     Txn(size_t, algoVector<Input>, size_t, algoVector<Output>);
     ~Txn();
-    size_t getNTxIn();
-    algoVector<Input> getInputs();
-    size_t getNTxOut();
-    algoVector<Output> getOutputs();
+
+    const size_t &getNTxIn() const;
+    const algoVector<Input> &getInputs() const;
+    const size_t &getNTxOut() const;
+    const algoVector<Output> &getOutputs() const;
+
     void addInput(Input);
     void addOutput(Output);
     const int findIdx(const string &);

@@ -10,20 +10,20 @@ Output::Output()
 
 Output::Output(string a, float v)
 {
-    addr = a;
-    value = v;
+    _addr = a;
+    _value = v;
 }
 
 Output::~Output()
 {
 }
 
-string Output::getAddr()
+const string &Output::getAddr() const
 {
-    return addr;
+    return _addr;
 }
 
-size_t Output::getValue()
+const size_t Output::getValue() const
 {
-    return value;
+    return _value;
 }

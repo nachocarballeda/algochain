@@ -17,17 +17,17 @@ Input::~Input()
 {
 }
 
-string Input::getAddr()
+const string &Input::getAddr() const
 {
     return addr;
 }
 
-string Input::getOutpointTxId()
+const string &Input::getOutpointTxId() const
 {
     return _outpoint.getTxId();
 }
 
-size_t Input::getOutpointIdx()
+const size_t &Input::getOutpointIdx() const
 {
     return _outpoint.getIdx();
 }

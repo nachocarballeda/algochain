@@ -16,11 +16,13 @@ public:
     Body(algoVector<Txn> Txns);
     Body(Txn);
     ~Body();
-    algoVector<Txn> &getTxns(void);
-    size_t getTxnCount(void);
+
+    const algoVector<Txn> &getTxns(void) const;
+    const size_t &getTxnCount(void) const;
+    const string cat() const;
+
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);
-    string cat();
     friend ostream &operator<<(ostream &, Body);
 
 private:

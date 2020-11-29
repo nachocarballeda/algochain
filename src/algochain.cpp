@@ -175,23 +175,23 @@ void Algochain ::emit()
     }
 }
 
-const Mempool &Algochain::getMempool()
+const Mempool &Algochain::getMempool() const
 {
     return _mempool;
 }
 
-const TxnsMemo &Algochain::getTxnsMemo()
+const TxnsMemo &Algochain::getTxnsMemo() const
 {
     return _txns_memo;
 }
 
-const BlocksMemo &Algochain::getBlocksMemo()
+const BlocksMemo &Algochain::getBlocksMemo() const
 {
 
     return _blocks_memo;
 }
 
-string Algochain ::getGenesisBlockHash()
+string Algochain ::getGenesisBlockHash() const
 {
     if (isEmpty())
     {
@@ -286,7 +286,7 @@ void algochainStart(void)
 
                 else
                 {
-                    Block *block = algochain.getBlocksMemo().getData().at(block_hash);
+                    const Block *block = algochain.getBlocksMemo().getData().at(block_hash);
                     cout << block->cat() << endl;
                 }
             }
@@ -303,7 +303,6 @@ void algochainStart(void)
 
                 else
                 {
-                    cout << "IMPRIMO TXN" << endl;
                     cout << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
                 }
             }
@@ -356,14 +355,17 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input)
     if (bits <= 0)
     {
         cout << "Please, insert a valid number of bits" << endl;
+        return std::make_tuple(user_name, value, bits);
     }
     else if (value <= 0)
     {
         cout << "Invalid number of Algocoins" << endl;
+        return std::make_tuple(user_name, value, bits);
     }
     else if (user_input.fail())
     {
         cout << "Initialization fail" << endl;
+        return std::make_tuple(user_name, value, bits);
     }
     else
     {
@@ -385,6 +387,7 @@ std::tuple<size_t> _command_mine(istringstream &user_input)
     if (user_input.fail() || bits <= 0)
     {
         cout << "Please, insert a valid number of bits" << endl;
+        return std::make_tuple(bits);
     }
     else
     {

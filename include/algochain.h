@@ -52,8 +52,8 @@ public:
         _next = 0;
         _ant = 0;
     }
-    Block &getData() { return _data; }
-    BlockNode *getNext() { return _next; }
+    const Block &getData() const { return _data; }
+    BlockNode *getNext() const { return _next; }
 
 private:
     Block _data;
@@ -65,13 +65,14 @@ class Algochain
 public:
     Algochain();
     ~Algochain();
-    void init(string, float, size_t);
-    const Balance getBalance() const;
-    const TxnsMemo &getTxnsMemo();
-    const BlocksMemo &getBlocksMemo();
-    const Mempool &getMempool();
-    string getGenesisBlockHash();
 
+    const Balance getBalance() const;
+    const TxnsMemo &getTxnsMemo() const;
+    const BlocksMemo &getBlocksMemo() const;
+    const Mempool &getMempool() const;
+    string getGenesisBlockHash() const;
+
+    void init(string, float, size_t);
     void transfer(const string &, const unordered_map<string, float> &, const float &);
     void mine(const size_t &bits);
     void addBlock(Block &);            //alta al final

@@ -11,8 +11,8 @@ public:
     Outpoint();
     Outpoint(string, size_t);
     ~Outpoint();
-    string getTxId();
-    size_t getIdx();
+    const string &getTxId() const;
+    const size_t &getIdx() const;
 
 private:
     string tx_id;

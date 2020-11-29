@@ -73,7 +73,7 @@ void Header::incrementNonce()
     _nonce++;
 }
 
-string Header::cat()
+const string Header::cat() const
 {
     string s = "";
 

@@ -16,12 +16,15 @@ public:
     Balance(string, float);
     Balance(unordered_map<string, float>);
     ~Balance();
+
     const float getUserBalance(const string &) const;
-    const unordered_map<string, float> getData();
+    const unordered_map<string, float> getData() const;
+    const bool isEmpty() const;
+
     void clear();
     void update(string, float); //actualizar balance de usuarios
     void operator=(const Balance &);
-    const bool isEmpty();
+
     friend ostream &operator<<(ostream &, Balance);
 
 private:

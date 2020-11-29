@@ -15,9 +15,9 @@ public:
     Input();
     Input(string, string, size_t);
     ~Input();
-    string getAddr();
-    string getOutpointTxId();
-    size_t getOutpointIdx();
+    const string &getAddr() const;
+    const string &getOutpointTxId() const;
+    const size_t &getOutpointIdx() const;
 
 private:
     string addr;

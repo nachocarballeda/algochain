@@ -32,12 +32,12 @@ const float Balance::getUserBalance(const string &user) const
         return _data.at(user);
 }
 
-const unordered_map<string, float> Balance::getData()
+const unordered_map<string, float> Balance::getData() const
 {
     return _data;
 }
 
-const bool Balance::isEmpty()
+const bool Balance::isEmpty() const
 {
     return _data.empty();
 }

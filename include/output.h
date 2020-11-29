@@ -11,12 +11,12 @@ public:
     Output();
     Output(string, float);
     ~Output();
-    string getAddr();
-    size_t getValue();
+    const string &getAddr() const;
+    const size_t getValue() const;
 
 private:
-    string addr;
-    float value;
+    string _addr;
+    float _value;
 };
 
 #endif /** _OUTPUTS_H_ */

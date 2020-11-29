@@ -124,12 +124,6 @@ void Block::loadTxn(const string filepath)
     txns_file.close();
 }
 
-void Block::print()
-{
-    cout << _header.cat() << endl;
-    cout << _body.cat() << endl;
-}
-
 void Block::writeToFile(string filepath)
 {
     if (filepath[0] != '-')
@@ -177,7 +171,7 @@ Header const &Block::getHeader() const
     return _header;
 }
 
-Body &Block::getBody()
+const Body &Block::getBody() const
 {
     return _body;
 }
@@ -251,7 +245,7 @@ void Block::proofOfWork()
     }
 }
 
-string Block::cat()
+const string Block::cat() const
 {
     ostringstream oss;
     oss << _header.cat()

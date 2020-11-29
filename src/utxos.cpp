@@ -17,7 +17,7 @@ Utxos::~Utxos()
 {
 }
 
-const string &Utxos::getUserUtxoHash(const string &user) const
+const string Utxos::getUserUtxoHash(const string &user) const
 {
     if (_data.find(user) == _data.end())
     {
@@ -27,7 +27,7 @@ const string &Utxos::getUserUtxoHash(const string &user) const
         return _data.at(user)._tx_hash;
 }
 
-const size_t Utxos::findUtxoIdx(const string &user)
+const size_t Utxos::findUtxoIdx(const string &user) const
 {
     if (_data.find(user) == _data.end())
     {
@@ -40,7 +40,7 @@ const size_t Utxos::findUtxoIdx(const string &user)
     }
 }
 
-const bool Utxos::isEmpty()
+const bool Utxos::isEmpty() const
 {
     return _data.empty();
 }

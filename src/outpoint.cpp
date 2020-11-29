@@ -18,12 +18,12 @@ Outpoint::~Outpoint()
 {
 }
 
-string Outpoint::getTxId()
+const string &Outpoint::getTxId() const
 {
     return tx_id;
 };
 
-size_t Outpoint::getIdx()
+const size_t &Outpoint::getIdx() const
 {
     return idx;
 };

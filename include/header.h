@@ -28,7 +28,7 @@ public:
     void setBits(size_t const &);       //Establece _bits.
     void setTxnsHash(string const &);   //Establece _txns_hash.
     void incrementNonce();              //Aumenta el valor del _nonce.
-    string cat();                       //Concatena el contenido del Header.
+    const string cat() const;           //Concatena el contenido del Header.
 
     friend ostream &operator<<(ostream &, Header); //Operador '<<'.
 };

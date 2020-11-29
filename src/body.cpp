@@ -32,12 +32,12 @@ void Body::setTxnCount(size_t txn_count)
     _txn_count = txn_count;
 }
 
-size_t Body::getTxnCount(void)
+const size_t &Body::getTxnCount(void) const
 {
     return _txn_count;
 }
 
-algoVector<Txn> &Body::getTxns(void)
+const algoVector<Txn> &Body::getTxns(void) const
 {
     return _txns;
 }
@@ -47,7 +47,7 @@ void Body::addTxn(Txn newTxn)
     _txn_count = _txn_count + 1;
 }
 
-string Body::cat()
+const string Body::cat() const
 {
     string concatTxns = "";
     if (_txn_count == 0)

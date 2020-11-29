@@ -19,15 +19,15 @@ class BlocksMemo
 public:
     BlocksMemo();
     ~BlocksMemo();
-    const unordered_map<string, Block *> &getData() const;
+    const unordered_map<string, const Block *> &getData() const;
 
-    const bool isEmpty();
+    const bool isEmpty() const;
 
     void clear();
-    void update(const string &, Block *);
+    void update(const string &, const Block *);
 
 private:
-    unordered_map<string, Block *> _data;
+    unordered_map<string, const Block *> _data;
 };
 
 #endif /** _BLOCKS_MEMO_H_ */

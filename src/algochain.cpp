@@ -18,6 +18,8 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input);
 std::tuple<string> _command_balance(istringstream &user_input);
 std::tuple<string, unordered_map<string, float>, float> _command_transfer(istringstream &user_input);
 std::tuple<size_t> _command_mine(istringstream &user_input);
+std::tuple<string> _command_txn(istringstream &user_input);
+std::tuple<string> _command_block(istringstream &user_input);
 
 Algochain ::Algochain()
 {
@@ -70,6 +72,9 @@ void Algochain::init(string user, float value, size_t bits)
     _aux1->_next = 0;
     _first = _aux1;
     _first->_ant = 0;
+    // actualizo la memorizacion de txn y block una vez que ya se paso a la algo chain
+    _blocks_memo.update(sha256(_first->getData().cat()), &_first->getData());
+    _txns_memo.update(sha256(_first->getData().getBody().getTxns()[0].cat()), &(_first->getData().getBody().getTxns()[0]));
 }
 
 Algochain ::~Algochain()
@@ -131,6 +136,11 @@ void Algochain ::mine(const size_t &bits)
     _balance = _mempool.getNewBalance();
     Block newBlock(newHeader, newBody);
     newBlock.updateTxnsHash();
+
+    _blocks_memo.update(sha256(newBlock.cat()), &newBlock);
+    for (size_t i = 0; i < newBody.getTxns().size(); i++)
+        _txns_memo.update(sha256(newBody.getTxns()[i].cat()), &newBody.getTxns()[i]);
+
     this->addBlock(newBlock);
 }
 
@@ -168,6 +178,17 @@ void Algochain ::emit()
 const Mempool &Algochain::getMempool()
 {
     return _mempool;
+}
+
+const TxnsMemo &Algochain::getTxnsMemo()
+{
+    return _txns_memo;
+}
+
+const BlocksMemo &Algochain::getBlocksMemo()
+{
+
+    return _blocks_memo;
 }
 
 string Algochain ::getGenesisBlockHash()
@@ -257,14 +278,34 @@ void algochainStart(void)
                 cout
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "block's fields are.." << endl;
+            {
+                string block_hash;
+                tie(block_hash) = _command_block(user_input);
+                if (block_hash == "")
+                    ;
 
+                else
+                {
+                    Block *block = algochain.getBlocksMemo().getData().at(block_hash);
+                    cout << block->cat() << endl;
+                }
+            }
         else if (user_command == COMMAND_TXN)
             if (algochain.isEmpty())
                 cout
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "txn command.." << endl;
+            {
+                string txn_hash;
+                tie(txn_hash) = _command_txn(user_input);
+                if (txn_hash == "")
+                    ;
+
+                else
+                {
+                    cout << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
+                }
+            }
 
         else if (user_command == COMMAND_LOAD)
             if (algochain.isEmpty())
@@ -376,4 +417,28 @@ std::tuple<string, unordered_map<string, float>, float> _command_transfer(istrin
         }
     }
     return std::make_tuple(src_user, dest, cum_sum);
+}
+
+std::tuple<string> _command_txn(istringstream &user_input)
+{
+    string txn_hash;
+    user_input >> txn_hash;
+    if (txn_hash.length() != 64)
+    {
+        cout << "Invalid Txn Hash" << endl;
+        return std::make_tuple("");
+    }
+    return std::make_tuple(txn_hash);
+}
+
+std::tuple<string> _command_block(istringstream &user_input)
+{
+    string block_hash;
+    user_input >> block_hash;
+    if (block_hash.length() != 64)
+    {
+        cout << "Invalid Txn Hash" << endl;
+        return std::make_tuple("");
+    }
+    return std::make_tuple(block_hash);
 }

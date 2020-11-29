@@ -37,6 +37,10 @@ size_t Body::getTxnCount(void)
     return _txn_count;
 }
 
+algoVector<Txn> &Body::getTxns(void)
+{
+    return _txns;
+}
 void Body::addTxn(Txn newTxn)
 {
     _txns.push_back(newTxn);

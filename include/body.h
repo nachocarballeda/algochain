@@ -16,6 +16,7 @@ public:
     Body(algoVector<Txn> Txns);
     Body(Txn);
     ~Body();
+    algoVector<Txn> &getTxns(void);
     size_t getTxnCount(void);
     void setTxnCount(size_t txn_count);
     void addTxn(Txn);

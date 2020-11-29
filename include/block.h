@@ -24,11 +24,12 @@ public:
     Block(const string);
     ~Block();
 
+    string cat();
     void setHeader(const Header &);
     void setBody(const Body &);
     void setDifficulty(const size_t &);
     Header const &getHeader() const;
-    Body const &getBody() const;
+    Body &getBody();
     void updateTxnsHash();
 
     void loadTxn(const string);

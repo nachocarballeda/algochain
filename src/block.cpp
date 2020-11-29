@@ -177,7 +177,7 @@ Header const &Block::getHeader() const
     return _header;
 }
 
-Body const &Block::getBody() const
+Body &Block::getBody()
 {
     return _body;
 }
@@ -211,9 +211,9 @@ void Block::proofOfWork()
         for (size_t j = 0; j < 32; j++)
         { //Reviso los 32 bytes del hash.
 
-            if ((h[j] - 48) > 48)   //Si esta entre a-f
+            if ((h[j] - 48) > 48) //Si esta entre a-f
                 c = (h[j] - 87);
-            else                    //Si esta entre 0-9
+            else //Si esta entre 0-9
                 c = (h[j] - 48);
 
             size_t i = 0;
@@ -221,7 +221,7 @@ void Block::proofOfWork()
             /*
                 Pruebo que cada bit sea 0. El bit c[0] = LSb y c[3] = MSb
             */
-            for ( ;i < 4; i++)
+            for (; i < 4; i++)
             {
                 if (c[3 - i] != 0)
                     break;
@@ -251,6 +251,13 @@ void Block::proofOfWork()
     }
 }
 
+string Block::cat()
+{
+    ostringstream oss;
+    oss << _header.cat()
+        << _body.cat();
+    return oss.str();
+}
 ostream &operator<<(ostream &os, Block b)
 {
     return os << b._header

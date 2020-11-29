@@ -16,6 +16,8 @@
 #include "../include/balance.h"
 #include "../include/utxos.h"
 #include "../include/mempool.h"
+#include "../include/txns_memo.h"
+#include "../include/blocks_memo.h"
 
 #define MSG_INIT_ALGOCHAIN_FIRST "Please init the Algochain first"
 
@@ -50,7 +52,7 @@ public:
         _next = 0;
         _ant = 0;
     }
-    Block getData() { return _data; }
+    Block &getData() { return _data; }
     BlockNode *getNext() { return _next; }
 
 private:
@@ -65,6 +67,8 @@ public:
     ~Algochain();
     void init(string, float, size_t);
     const Balance getBalance() const;
+    const TxnsMemo &getTxnsMemo();
+    const BlocksMemo &getBlocksMemo();
     const Mempool &getMempool();
     string getGenesisBlockHash();
 
@@ -81,6 +85,8 @@ private:
     BlockNode *_first;
     Balance _balance;
     Utxos _utxos;
+    TxnsMemo _txns_memo;
+    BlocksMemo _blocks_memo;
     Mempool _mempool;
 };
 

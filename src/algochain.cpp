@@ -144,7 +144,7 @@ void Algochain ::mine(const size_t &bits)
     this->addBlock(newBlock);
 }
 
-void Algochain ::addBlock(Block _b)
+void Algochain ::addBlock(Block &_b)
 {
     BlockNode *_aux1, *_aux2;
     _aux1 = new BlockNode(_b);
@@ -303,6 +303,7 @@ void algochainStart(void)
 
                 else
                 {
+                    cout << "IMPRIMO TXN" << endl;
                     cout << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
                 }
             }

@@ -74,7 +74,7 @@ public:
 
     void transfer(const string &, const unordered_map<string, float> &, const float &);
     void mine(const size_t &bits);
-    void addBlock(Block);              //alta al final
+    void addBlock(Block &);            //alta al final
     void updateBalance(string, float); //actualizar balance de usuarios
     void emitBalance();
     void emit(); //emite la lista. Escribirla

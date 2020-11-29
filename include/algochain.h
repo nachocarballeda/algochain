@@ -80,7 +80,10 @@ public:
     void emitBalance();
     void emit(); //emite la lista. Escribirla
 
+    const string cat() const;
     bool isEmpty() const; //retorna true si lista vacia
+
+    friend std::ostream &operator<<(std::ostream &, Algochain);
 
 private:
     BlockNode *_first;

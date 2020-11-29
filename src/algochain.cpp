@@ -20,6 +20,8 @@ std::tuple<string, unordered_map<string, float>, float> _command_transfer(istrin
 std::tuple<size_t> _command_mine(istringstream &user_input);
 std::tuple<string> _command_txn(istringstream &user_input);
 std::tuple<string> _command_block(istringstream &user_input);
+std::tuple<string> _command_load(istringstream &user_input);
+std::tuple<string> _command_save(istringstream &user_input);
 
 Algochain ::Algochain()
 {
@@ -312,14 +314,38 @@ void algochainStart(void)
                 cout
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "loading from file.." << endl;
+            {
+                string file_name;
+                tie(file_name) = _command_txn(user_input);
+                if (file_name == "")
+                    ;
+
+                else
+                {
+                    ofstream ofs(file_name);
+                    ofs << algochain.cat() << endl;
+                    ofs.close();
+                }
+            }
 
         else if (user_command == COMMAND_SAVE)
             if (algochain.isEmpty())
                 cout
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
-                cout << "saving to file..";
+            {
+                string file_name;
+                tie(file_name) = _command_save(user_input);
+                if (file_name == "")
+                    ;
+
+                else
+                {
+                    ofstream ofs(file_name);
+                    ofs << algochain.cat() << endl;
+                    ofs.close();
+                }
+            }
 
         else if (user_command == COMMAND_HELP)
             cout << COMMAND_REPLY_TO_HELP << endl;
@@ -342,6 +368,21 @@ const Balance Algochain::getBalance() const
 void Algochain::emitBalance()
 {
     cout << _balance;
+}
+const string Algochain::cat() const
+{
+    BlockNode *aux = _first;
+    string algochain_cat;
+    while (aux)
+    {
+        algochain_cat.append(aux->getData().cat());
+        aux = aux->getNext();
+    }
+    return algochain_cat;
+}
+ostream &operator<<(ostream &os, Algochain algochain)
+{
+    return os << algochain.cat();
 }
 
 std::tuple<string, float, size_t> _command_init(istringstream &user_input)
@@ -445,4 +486,18 @@ std::tuple<string> _command_block(istringstream &user_input)
         return std::make_tuple("");
     }
     return std::make_tuple(block_hash);
+}
+
+std::tuple<string> _command_load(istringstream &user_input)
+{
+    string algochain_file;
+    user_input >> algochain_file;
+    return std::make_tuple(algochain_file);
+}
+
+std::tuple<string> _command_save(istringstream &user_input)
+{
+    string algochain_file;
+    user_input >> algochain_file;
+    return std::make_tuple(algochain_file);
 }

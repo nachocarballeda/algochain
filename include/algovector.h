@@ -4,6 +4,8 @@
 #ifndef _ALGOVECTOR_H_
 #define _ALGOVECTOR_H_
 
+#include <stdexcept>
+
 template <class T>
 class  algoVector
 {
@@ -32,7 +34,6 @@ public:
 
     T & operator[](unsigned int index);  
     algoVector<T> & operator=(const algoVector<T> &);
-    void clear();
 private:
     unsigned int my_size;
     unsigned int my_capacity;
@@ -160,11 +161,14 @@ void algoVector<T>::resize(unsigned int size)
     my_size = size;
 }
 
+
 template<class T>
 T& algoVector<T>::operator[](unsigned int index)
 {
+    if(index >= my_capacity || index < 0)
+        throw std::out_of_range("algoVector index is out of range");
     return buffer[index];
-}  
+}
 
 template<class T>
 unsigned int algoVector<T>::capacity()const
@@ -176,13 +180,6 @@ template<class T>
 algoVector<T>::~algoVector()
 {
     delete[ ] buffer;
-}
-template <class T>
-void algoVector<T>::clear()
-{
-    my_capacity = 0;
-    my_size = 0;
-    buffer = 0;
 }
 
 #endif //_ALGOVECTOR_H_

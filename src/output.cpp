@@ -8,7 +8,7 @@ Output::Output()
 {
 }
 
-Output::Output(string a, float v)
+Output::Output(string a, double v)
 {
     addr = a;
     value = v;
@@ -23,7 +23,7 @@ string Output::getAddr()
     return addr;
 }
 
-size_t Output::getValue()
+double Output::getValue()
 {
     return value;
 }

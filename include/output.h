@@ -9,14 +9,14 @@ class Output
 {
 public:
     Output();
-    Output(string, float);
+    Output(string, double);
     ~Output();
     string getAddr();
-    size_t getValue();
+    double getValue();
 
 private:
     string addr;
-    float value;
+    double value;
 };
 
 #endif /** _OUTPUTS_H_ */

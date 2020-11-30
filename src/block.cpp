@@ -106,7 +106,7 @@ bool Block::loadTxn(const string filepath)
 
             getline(txns_file, line);
             istringstream output_data(line);
-            float value;
+            double value;
             string addr;
             output_data >> value;
             if (value < 0 || output_data.fail())

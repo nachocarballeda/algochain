@@ -36,12 +36,8 @@ string Body::cat()
     string concatTxns = "";
     if (_txn_count == 0)
     {
-        concatTxns.append(to_string(_txn_count));
-        concatTxns.append("\n");
         return concatTxns;
     }
-    concatTxns.append(to_string(_txn_count));
-    concatTxns.append("\n");
     for (size_t i = 0; i < _txn_count; i++)
     {
         concatTxns.append(to_string(_txns[i].getNTxIn()));
@@ -67,7 +63,7 @@ string Body::cat()
                 concatTxns.append("\n");
         }
     }
-
+    concatTxns.append("\n");
     return concatTxns;
 }
 

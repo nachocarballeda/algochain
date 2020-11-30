@@ -141,7 +141,8 @@ void Block::writeToFile(string filepath)
             return;
         }
         block_file << _header.cat()
-                << _body.cat();
+                   << _body.getTxnCount() << "\n"
+                   << _body.cat();
 
         if (!block_file.good())
         {
@@ -153,6 +154,7 @@ void Block::writeToFile(string filepath)
     else
     {
         cout << _header.cat()
+             << _body.getTxnCount() << "\n"
              << _body.cat();
     }
 }
@@ -184,11 +186,7 @@ Body const &Block::getBody() const
 
 void Block::updateTxnsHash()
 {
-    string s;
-    if(_body.getTxnCount() == 0)
-        s = "";
-    else
-        s = _body.cat();
+    string s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
     proofOfWork();
 }

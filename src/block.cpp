@@ -30,17 +30,20 @@ Block::~Block()
 
 Block::Block(string filepath)
 {
-    loadTxn(filepath);
+    if(loadTxn(filepath)==false)
+        setTxnError(true);
+    else
+        setTxnError(false);
 }
 
-void Block::loadTxn(const string filepath)
+bool Block::loadTxn(const string filepath)
 {
     ifstream txns_file(filepath);
     Txn newTxn;
     if (!txns_file.good())
     {
         showError(MSG_ERROR_INVALID_FILEPATH);
-        return;
+        return false;
     }
 
     while (!txns_file.eof())
@@ -51,12 +54,14 @@ void Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream inputStream(line);
         if (line.length() == 0)
-            return;
+        {
+            return true;
+        }
         inputStream >> n_tx_in;
         if (n_tx_in < 1)
         {
             showError(MSG_ERROR_INVALID_N_TX_IN);
-            return;
+            return false;
         }
 
         for (int i = 0; i < n_tx_in; ++i)
@@ -70,19 +75,19 @@ void Block::loadTxn(const string filepath)
             if (tx_id.length() != 64 || input_data.fail())
             {
                 showError(MSG_ERROR_INVALID_TX_ID, "Input number " + (i + 1));
-                return;
+                return false;
             }
             input_data >> id_x;
             if (id_x < 0 || input_data.fail())
             {
                 showError(MSG_ERROR_INVALID_IDX, "Input number " + (i + 1));
-                return;
+                return false;
             }
             input_data >> addr;
             if (addr.length() != 64 || input_data.fail())
             {
                 showError(MSG_ERROR_INVALID_ADDR, "Input number " + (i + 1));
-                return;
+                return false;
             }
             Input newInput(addr, tx_id, id_x);
             newTxn.addInput(newInput);
@@ -94,7 +99,7 @@ void Block::loadTxn(const string filepath)
         if (n_tx_out > n_tx_in || outputStream.fail())
         {
             showError(MSG_ERROR_INVALID_N_TX_OUT);
-            return;
+            return false;
         }
         for (int i = 0; i < n_tx_out; ++i)
         {
@@ -107,13 +112,13 @@ void Block::loadTxn(const string filepath)
             if (value < 0 || output_data.fail())
             {
                 showError(MSG_ERROR_INVALID_OUTPUT_VALUE, "Output number " + (i + 1));
-                return;
+                return false;
             }
             output_data >> addr;
             if (addr.length() != 64 || output_data.fail())
             {
                 showError(MSG_ERROR_INVALID_OUTPUT_ADDR, "Output number " + (i + 1));
-                return;
+                return false;
             }
             Output newOutput(addr, value);
             newTxn.addOutput(newOutput);
@@ -122,6 +127,7 @@ void Block::loadTxn(const string filepath)
         _body.addTxn(newTxn);
     }
     txns_file.close();
+    return true;
 }
 
 void Block::print()
@@ -164,6 +170,11 @@ void Block::setHeader(const Header &h)
     _header = h;
 }
 
+void Block::setTxnError(bool err)
+{
+    _transaction_error = err;
+}
+
 void Block::setBody(const Body &b)
 {
     _body = b;
@@ -182,6 +193,11 @@ Header const &Block::getHeader() const
 Body const &Block::getBody() const
 {
     return _body;
+}
+
+const bool Block::getTxnError() const
+{
+    return _transaction_error;
 }
 
 void Block::updateTxnsHash()

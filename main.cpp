@@ -34,5 +34,6 @@ int main(int argc, char *argv[])
     Block block0(_input_file);
     block0.setDifficulty(_difficulty);
     block0.updateTxnsHash();
-    block0.writeToFile(_output_file);
+    if(block0.getTxnError()==false)
+        block0.writeToFile(_output_file);
 }

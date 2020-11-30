@@ -36,7 +36,9 @@ string Body::cat()
     string concatTxns = "";
     if (_txn_count == 0)
     {
-        return concatTxns.append("0\n");
+        concatTxns.append(to_string(_txn_count));
+        concatTxns.append("\n");
+        return concatTxns;
     }
     concatTxns.append(to_string(_txn_count));
     concatTxns.append("\n");

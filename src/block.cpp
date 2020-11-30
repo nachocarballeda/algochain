@@ -184,10 +184,12 @@ Body const &Block::getBody() const
 
 void Block::updateTxnsHash()
 {
-
-    string s = _body.cat();
+    string s;
+    if(_body.getTxnCount() == 0)
+        s = "";
+    else
+        s = _body.cat();
     _header.setTxnsHash(sha256(sha256(s)));
-
     proofOfWork();
 }
 

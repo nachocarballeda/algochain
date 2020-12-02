@@ -115,9 +115,22 @@ T &algoVector<T>::back()
 template <class T>
 void algoVector<T>::push_back(const T &v)
 {
-    if (my_size >= my_capacity)
-        reserve(my_capacity + 5);
-    buffer[my_size++] = v;
+    if (my_size == my_capacity)
+    {
+        T *temp = new T[my_capacity + 5];
+
+        for (unsigned int i = 0; i < my_capacity; i++)
+        {
+            temp[i] = buffer[i];
+        }
+
+        delete[] buffer;
+        my_capacity = my_capacity + 5;
+        buffer = temp;
+    }
+
+    buffer[my_size] = v;
+    my_size++;
 }
 
 template <class T>

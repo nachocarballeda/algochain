@@ -27,6 +27,15 @@ void BlocksMemo::clear()
 {
     _data.clear();
 }
+
+const Block *BlocksMemo::getBlock(const string &block_hash) const
+{
+    if (_data.find(block_hash) == _data.end())
+        return nullptr;
+    else
+        return _data.at(block_hash);
+}
+
 void BlocksMemo::update(const string &block_hash, const Block *block)
 {
 

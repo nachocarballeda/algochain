@@ -15,13 +15,13 @@
 using namespace std;
 
 std::tuple<string, float, size_t> _command_init(istringstream &user_input);
-std::tuple<string> _command_balance(istringstream &user_input);
+const string _command_balance(istringstream &user_input);
 std::tuple<string, unordered_map<string, float>, float> _command_transfer(istringstream &user_input);
-std::tuple<size_t> _command_mine(istringstream &user_input);
-std::tuple<string> _command_txn(istringstream &user_input);
-std::tuple<string> _command_block(istringstream &user_input);
-std::tuple<string> _command_load(istringstream &user_input);
-std::tuple<string> _command_save(istringstream &user_input);
+const size_t _command_mine(istringstream &user_input);
+const string _command_txn(istringstream &user_input);
+const string _command_block(istringstream &user_input);
+const string _command_load(istringstream &user_input);
+const string _command_save(istringstream &user_input);
 
 Algochain ::Algochain()
 {
@@ -36,6 +36,10 @@ void Algochain::init(string user, float value, size_t bits)
     else
     {
         _balance.clear();
+        _utxos.clear();
+        _txns_memo.clear();
+        _blocks_memo.clear();
+        _mempool.clear();
         BlockNode *_aux = _first;
         while (_first)
         {
@@ -65,8 +69,10 @@ void Algochain::init(string user, float value, size_t bits)
     _utxos.update(user, sha256(initTxn.cat()), initTxn);
     Body genesisBody(initTxn);
     Header genesisHeader(bits);
-    Block genesisBlock(genesisHeader, genesisBody);
+    genesisHeader.setPrevBlock(GENESIS_BLOCK_HASH);
 
+    Block genesisBlock(genesisHeader, genesisBody);
+    genesisBlock.updateTxnsHash();
     _balance.update(user, value);
 
     _aux1 = new BlockNode(genesisBlock);
@@ -94,40 +100,49 @@ void Algochain::transfer(const string &src_user, const unordered_map<string, flo
 {
     size_t dest_count = 1; // arrango en 1 para contemplar el output del src user
     string tx_id = _utxos.getUserUtxoHash(src_user);
-    cout << tx_id << endl;
+    // cout << tx_id << endl;
     int idx = _utxos.findUtxoIdx(src_user);
-    cout << idx << endl;
+    // cout << idx << endl;
     string addr = sha256(src_user);
 
     if (tx_id == "")
-        cout << "User doesn't exist" << endl;
+        cout << "FAIL tx_id" << endl;
     else if (idx == -1)
     {
-        cout << "ERROR FINDING IDX FOR SOURCE USER" << src_user << endl;
+        cout << "FAIL idx" << src_user << endl;
     }
     else
     {
         Input transferInput(tx_id, addr, idx);
         algoVector<Input> transferInputVec;
         transferInputVec.push_back(transferInput);
-
         algoVector<Output> transferOutputVec;
+        Balance newBalance;
+        newBalance = _balance;
+        newBalance.update(src_user, _balance.getUserBalance(src_user) - cum_sum);
 
         for (const auto &n : destianations)
         {
             Output newOutput(sha256(n.first), n.second);
             transferOutputVec.push_back(newOutput);
+            newBalance.update(n.first, _balance.getUserBalance(n.first) + n.second);
             dest_count = dest_count + 1;
         }
         Output srcUserOutput(sha256(src_user), _balance.getUserBalance(src_user) - cum_sum);
         transferOutputVec.push_back(srcUserOutput);
+
         Txn new_txn(1, transferInputVec, dest_count, transferOutputVec);
 
-        unordered_map<string, float> newBalance = destianations;
-        newBalance.insert({src_user, _balance.getUserBalance(src_user) - cum_sum});
-        Balance mempoolBalance(newBalance);
-        _mempool.setNewBalance(mempoolBalance);
+        _utxos.update(src_user, sha256(new_txn.cat()), new_txn);
+        for (const auto &n : destianations)
+        {
+            _utxos.update(n.first, sha256(new_txn.cat()), new_txn);
+        }
+
+        _balance = newBalance;
+        //_mempool.setNewBalance(mempoolBalance);
         _mempool.addTxn(new_txn);
+        cout << sha256(new_txn.cat()) << endl;
     }
 }
 
@@ -135,18 +150,47 @@ void Algochain ::mine(const size_t &bits)
 {
     Body newBody(_mempool.getNewTxns());
     Header newHeader(bits);
-    _balance = _mempool.getNewBalance();
+    //_balance = _mempool.getNewBalance();
     Block newBlock(newHeader, newBody);
     newBlock.updateTxnsHash();
+    Header newBlockHeaderWithTxnsHash = newBlock.getHeader();
+    BlockNode *newBlockPtr = addBlock(newBlock);
 
-    _blocks_memo.update(sha256(newBlock.cat()), &newBlock);
-    for (size_t i = 0; i < newBody.getTxns().size(); i++)
-        _txns_memo.update(sha256(newBody.getTxns()[i].cat()), &newBody.getTxns()[i]);
+    // BUSCO EL HASH DEL BLOQUE PREVIO
+    string prevBlockHash = sha256(newBlockPtr->getData().cat());
+    newBlockHeaderWithTxnsHash.setPrevBlock(prevBlockHash);
+    newBlockPtr->setData(newBlockHeaderWithTxnsHash, newBody);
 
-    this->addBlock(newBlock);
+    _blocks_memo.update(sha256(newBlock.cat()), &(newBlockPtr->_data));
+
+    for (size_t i = 0; i < newBlockPtr->_data.getBody().getTxns().size(); i++) // .getTxns().size(); i++)
+        _txns_memo.update(sha256(newBody.getTxns()[i].cat()), &newBlockPtr->_data.getBody().getTxns()[i]);
+    _mempool.clear();
+    cout << sha256(newBlock.cat()) << endl;
 }
 
-void Algochain ::addBlock(Block &_b)
+// void Algochain ::addBlock(Block &_b)
+// {
+//     BlockNode *_aux1, *_aux2;
+//     _aux1 = new BlockNode(_b);
+//     _aux1->_data = _b;
+//     _aux1->_next = 0;
+//     if (isEmpty())
+//     {
+//         _first = _aux1;
+//         _first->_ant = 0;
+//     }
+//     else
+//     {
+//         _aux2 = _first;
+//         while (_aux2->_next)
+//             _aux2 = _aux2->_next;
+//         _aux2->_next = _aux1;
+//         _aux1->_ant = _aux2;
+//     }
+// }
+
+BlockNode *Algochain ::addBlock(Block _b)
 {
     BlockNode *_aux1, *_aux2;
     _aux1 = new BlockNode(_b);
@@ -165,6 +209,7 @@ void Algochain ::addBlock(Block &_b)
         _aux2->_next = _aux1;
         _aux1->_ant = _aux2;
     }
+    return _aux1;
 }
 
 void Algochain ::emit()
@@ -228,8 +273,13 @@ void algochainStart(void)
         if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);
-            algochain.init(user_name, value, bits);
-            cout << algochain.getGenesisBlockHash() << endl;
+            if (user_name == "FAIL")
+                ;
+            else
+            {
+                algochain.init(user_name, value, bits);
+                cout << algochain.getGenesisBlockHash() << endl;
+            }
         }
         else if (user_command == COMMAND_TRANSFER)
         {
@@ -242,7 +292,10 @@ void algochainStart(void)
             {
                 tie(src_user, dest, cum_sum) = _command_transfer(user_input);
                 if (cum_sum == -1 || algochain.getBalance().getUserBalance(src_user) < cum_sum)
-                    cout << "Invalid transfer" << endl;
+                {
+                    cout << "FAIL input fail si cum_sum es -1 y es : " << cum_sum << endl;
+                    cout << "Balance del source  " << algochain.getBalance().getUserBalance(src_user) << endl;
+                }
                 else
                 {
                     algochain.transfer(src_user, dest, cum_sum);
@@ -255,7 +308,7 @@ void algochainStart(void)
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
-                tie(bits) = _command_mine(user_input);
+                size_t bits = _command_mine(user_input);
                 if (algochain.getMempool().getNewTxns().empty())
                     cout << "There are no Txns to mine" << endl;
                 else
@@ -266,30 +319,31 @@ void algochainStart(void)
 
         else if (user_command == COMMAND_BALANCE)
             if (algochain.isEmpty())
-                cout
-                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
-                tie(user_name) = _command_balance(user_input);
+                string user_name = _command_balance(user_input);
                 float userBalance = algochain.getBalance().getUserBalance(user_name);
                 cout << userBalance << endl;
             }
 
         else if (user_command == COMMAND_BLOCK)
             if (algochain.isEmpty())
-                cout
-                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
-                string block_hash;
-                tie(block_hash) = _command_block(user_input);
+
+                string block_hash = _command_block(user_input);
                 if (block_hash == "")
-                    ;
+                    cout << "FAIL" << endl;
 
                 else
                 {
-                    const Block *block = algochain.getBlocksMemo().getData().at(block_hash);
-                    cout << block->cat() << endl;
+                    const Block *block = algochain.getBlocksMemo().getBlock(block_hash);
+                    if (block == nullptr)
+                        cout << "FAIL" << endl;
+                    else
+                        cout << block->cat() << endl;
                 }
             }
         else if (user_command == COMMAND_TXN)
@@ -298,8 +352,8 @@ void algochainStart(void)
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
-                string txn_hash;
-                tie(txn_hash) = _command_txn(user_input);
+
+                string txn_hash = _command_txn(user_input);
                 if (txn_hash == "")
                     ;
 
@@ -312,8 +366,7 @@ void algochainStart(void)
         else if (user_command == COMMAND_LOAD)
         {
 
-            string file_name;
-            tie(file_name) = _command_load(user_input);
+            string file_name = _command_load(user_input);
             if (file_name == "")
                 ;
 
@@ -329,8 +382,8 @@ void algochainStart(void)
                     << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
-                string file_name;
-                tie(file_name) = _command_save(user_input);
+
+                string file_name = _command_save(user_input);
                 if (file_name == "")
                     ;
 
@@ -338,6 +391,10 @@ void algochainStart(void)
                 {
                     ofstream ofs(file_name);
                     ofs << algochain.cat() << endl;
+                    if (ofs.fail())
+                        cout << "FAIL" << endl;
+                    else
+                        cout << "OK" << endl;
                     ofs.close();
                 }
             }
@@ -403,18 +460,18 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input)
     user_input >> bits;
     if (bits <= 0)
     {
-        cout << "Please, insert a valid number of bits" << endl;
-        return std::make_tuple(user_name, value, bits);
+        cout << "FAIL" << endl;
+        return std::make_tuple("FAIL", value, bits);
     }
     else if (value <= 0)
     {
-        cout << "Invalid number of Algocoins" << endl;
-        return std::make_tuple(user_name, value, bits);
+        cout << "FAIL" << endl;
+        return std::make_tuple("FAIL", value, bits);
     }
     else if (user_input.fail())
     {
-        cout << "Initialization fail" << endl;
-        return std::make_tuple(user_name, value, bits);
+        cout << "FAIL" << endl;
+        return std::make_tuple("FAIL", value, bits);
     }
     else
     {
@@ -422,25 +479,25 @@ std::tuple<string, float, size_t> _command_init(istringstream &user_input)
     }
 }
 
-std::tuple<string> _command_balance(istringstream &user_input)
+const string _command_balance(istringstream &user_input)
 {
     string user_name;
     user_input >> user_name;
-    return std::make_tuple(user_name);
+    return user_name;
 }
 
-std::tuple<size_t> _command_mine(istringstream &user_input)
+const size_t _command_mine(istringstream &user_input)
 {
     size_t bits;
     user_input >> bits;
     if (user_input.fail() || bits <= 0)
     {
         cout << "Please, insert a valid number of bits" << endl;
-        return std::make_tuple(bits);
+        return bits;
     }
     else
     {
-        return std::make_tuple(bits);
+        return bits;
     }
 }
 
@@ -472,40 +529,40 @@ std::tuple<string, unordered_map<string, float>, float> _command_transfer(istrin
     return std::make_tuple(src_user, dest, cum_sum);
 }
 
-std::tuple<string> _command_txn(istringstream &user_input)
+const string _command_txn(istringstream &user_input)
 {
     string txn_hash;
     user_input >> txn_hash;
     if (txn_hash.length() != 64)
     {
         cout << "Invalid Txn Hash" << endl;
-        return std::make_tuple("");
+        return "";
     }
-    return std::make_tuple(txn_hash);
+    return txn_hash;
 }
 
-std::tuple<string> _command_block(istringstream &user_input)
+const string _command_block(istringstream &user_input)
 {
     string block_hash;
     user_input >> block_hash;
     if (block_hash.length() != 64)
     {
         cout << "Invalid Txn Hash" << endl;
-        return std::make_tuple("");
+        return "";
     }
-    return std::make_tuple(block_hash);
+    return block_hash;
 }
 
-std::tuple<string> _command_load(istringstream &user_input)
+const string _command_load(istringstream &user_input)
 {
     string algochain_file;
     user_input >> algochain_file;
-    return std::make_tuple(algochain_file);
+    return algochain_file;
 }
 
-std::tuple<string> _command_save(istringstream &user_input)
+const string _command_save(istringstream &user_input)
 {
     string algochain_file;
     user_input >> algochain_file;
-    return std::make_tuple(algochain_file);
+    return algochain_file;
 }

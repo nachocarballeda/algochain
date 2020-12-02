@@ -9,7 +9,7 @@ using namespace std;
 class Header
 {
 private:
-    string _prev_block = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    string _prev_block;
     string _txns_hash;
     size_t _bits;
     size_t _nonce = 0;
@@ -27,6 +27,7 @@ public:
     string const &getTxnsHash() const;  //Devuelve _txns_hash.
     void setBits(size_t const &);       //Establece _bits.
     void setTxnsHash(string const &);   //Establece _txns_hash.
+    void setPrevBlock(string const &);  //Establece _txns_hash.
     void incrementNonce();              //Aumenta el valor del _nonce.
     const string cat() const;           //Concatena el contenido del Header.
 

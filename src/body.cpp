@@ -80,6 +80,7 @@ const string Body::cat() const
             if (j != _txns[i].getNTxOut() - 1)
                 concatTxns.append("\n");
         }
+        concatTxns.append("\n");
     }
 
     return concatTxns;

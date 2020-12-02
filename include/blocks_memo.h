@@ -20,7 +20,7 @@ public:
     BlocksMemo();
     ~BlocksMemo();
     const unordered_map<string, const Block *> &getData() const;
-
+    const Block *getBlock(const string &) const;
     const bool isEmpty() const;
 
     void clear();

@@ -67,6 +67,10 @@ void Header::setTxnsHash(string const &s)
 {
     _txns_hash = s;
 }
+void Header::setPrevBlock(string const &s)
+{
+    _prev_block = s;
+}
 
 void Header::incrementNonce()
 {

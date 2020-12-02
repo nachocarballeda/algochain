@@ -246,7 +246,8 @@ void Block::proofOfWork()
 const string Block::cat() const
 {
     ostringstream oss;
-    oss << _header.cat()
+    oss
+        << _header.cat()
         << _body.cat();
     return oss.str();
 }

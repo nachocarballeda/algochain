@@ -20,6 +20,7 @@
 #include "../include/blocks_memo.h"
 
 #define MSG_INIT_ALGOCHAIN_FIRST "Please init the Algochain first"
+#define GENESIS_BLOCK_HASH "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
 #define COMMAND_INIT "init"
 #define COMMAND_BALANCE "balance"
@@ -54,6 +55,11 @@ public:
     }
     const Block &getData() const { return _data; }
     BlockNode *getNext() const { return _next; }
+    void setData(const Header &h, const Body &b)
+    {
+        _data.setBody(b);
+        _data.setHeader(h);
+    };
 
 private:
     Block _data;
@@ -71,11 +77,14 @@ public:
     const BlocksMemo &getBlocksMemo() const;
     const Mempool &getMempool() const;
     string getGenesisBlockHash() const;
+    BlockNode *addBlock(Block _b);
+    // void addBlock(Block &);
+    const string getLastBlockHash() const;
 
     void init(string, float, size_t);
     void transfer(const string &, const unordered_map<string, float> &, const float &);
     void mine(const size_t &bits);
-    void addBlock(Block &);            //alta al final
+    //alta al final
     void updateBalance(string, float); //actualizar balance de usuarios
     void emitBalance();
     void emit(); //emite la lista. Escribirla

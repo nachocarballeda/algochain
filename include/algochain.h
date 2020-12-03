@@ -33,14 +33,26 @@
 #define COMMAND_HELP "help"
 #define COMMAND_EXIT "exit"
 #define COMMAND_REPLY_TO_HELP "\
-    init <user> <value> <bits>\n\
-    transfer <src> <dst1> <value1> ... <dstN> <valueN>\n\
-    mine <bits>\n\
-    balance <user>\n\
-    block <id>\n\
-    txn <id>\n\
-    load <filename>\n\
-    save <filename>\n"
+    init <user> <value> <bits> \n\
+            * Initialize Algochain\n\n\
+    transfer <src> <dst1> <value1> ... <dstN> <valueN> \n\
+            * Creates a transfer order \n\n\
+    mine <bits> \n\
+            * Makes a block for a given difficulty \n\n\
+    balance <user> \n\
+            * Prints the balance of a given user \n\n\
+    block <id> \n\
+            * Print block info \n\n\
+    txn <id> \n\
+            * Print the transaction info \n\n\
+    load <filename> \n\
+            * Load Algochain state from a file \n\n\
+    save <filename> \n\
+            * Save the Algochain state to a file \n\n\
+    help \n\
+            * Show this help info \n\n\
+    exit \n\
+            * Leaves the program without saving \n"
 
 class BlockNode
 {

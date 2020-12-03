@@ -1,0 +1,8 @@
+init satoshi 100 5
+transfer satoshi nacho 10 mati 20
+balance satoshi
+balance nacho
+balance mati
+mine 10
+save testing_algochain.txt
+

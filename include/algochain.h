@@ -82,8 +82,8 @@ public:
     const string getLastBlockHash() const;
 
     void init(string, float, size_t);
-    void transfer(const string &, const unordered_map<string, float> &, const float &);
-    void mine(const size_t &bits);
+    void transfer(const string &, const unordered_map<string, float> &, const float &, bool &, ofstream &);
+    void mine(const size_t &bits, bool &, ofstream &);
     //alta al final
     void updateBalance(string, float); //actualizar balance de usuarios
     void emitBalance();

@@ -96,7 +96,8 @@ Algochain ::~Algochain()
     }
 }
 
-void Algochain::transfer(const string &src_user, const unordered_map<string, float> &destianations, const float &cum_sum)
+void Algochain::transfer(const string &src_user, const unordered_map<string, float> &destianations,
+                         const float &cum_sum, bool &use_cout, ofstream &file_out)
 {
     size_t dest_count = 1; // arrango en 1 para contemplar el output del src user
     string tx_id = _utxos.getUserUtxoHash(src_user);
@@ -139,11 +140,14 @@ void Algochain::transfer(const string &src_user, const unordered_map<string, flo
 
         _balance = newBalance;
         _mempool.addTxn(new_txn);
-        cout << sha256(new_txn.cat()) << endl;
+        if(use_cout)
+            cout << sha256(new_txn.cat()) << endl;
+        else
+            file_out << sha256(new_txn.cat()) << endl;
     }
 }
 
-void Algochain ::mine(const size_t &bits)
+void Algochain ::mine(const size_t &bits, bool &use_cout, ofstream &out_file)
 {
     Body newBody(_mempool.getNewTxns());
     Header newHeader(bits);
@@ -162,7 +166,10 @@ void Algochain ::mine(const size_t &bits)
     for (size_t i = 0; i < newBlockPtr->_data.getBody().getTxns().size(); i++) // .getTxns().size(); i++)
         _txns_memo.update(sha256(newBody.getTxns()[i].cat()), &newBlockPtr->_data.getBody().getTxns()[i]);
     _mempool.clear();
-    cout << sha256(newBlock.cat()) << endl;
+    if(use_cout)
+        cout << sha256(newBlock.cat()) << endl;
+    else
+        out_file << sha256(newBlock.cat()) << endl;
 }
 
 BlockNode *Algochain ::addBlock(Block _b)
@@ -239,9 +246,11 @@ void algochainStart(string &input_file, string &output_file)
     string user_name;
     float value;
     size_t bits;
-    ifstream file(input_file);
+    ifstream _in_file(input_file);
+    ofstream _out_file(output_file);
     bool _stop_flag = false;
     bool _use_cin_flag = (input_file == "-");
+    bool _use_cout_flag = (output_file == "-");
 
     while (_stop_flag==false)
     {
@@ -251,7 +260,7 @@ void algochainStart(string &input_file, string &output_file)
         } 
         else if (!_use_cin_flag)
         {
-            if(!getline(file, user_complete_line))
+            if(!getline(_in_file, user_complete_line))
             {
                 _stop_flag = true;
             }
@@ -260,6 +269,7 @@ void algochainStart(string &input_file, string &output_file)
         istringstream user_input(user_complete_line);
         user_input >> user_command;
         
+        /**--------------------------INIT--------------------------**/
         if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);
@@ -268,9 +278,13 @@ void algochainStart(string &input_file, string &output_file)
             else
             {
                 algochain.init(user_name, value, bits);
-                cout << algochain.getGenesisBlockHash() << endl;
+                if(_use_cout_flag)
+                    cout << algochain.getGenesisBlockHash() << endl;
+                else
+                    _out_file << algochain.getGenesisBlockHash() << endl;
             }
         }
+        /**--------------------------TRANSFER--------------------------**/
         else if (user_command == COMMAND_TRANSFER)
         {
             string src_user;
@@ -288,11 +302,11 @@ void algochainStart(string &input_file, string &output_file)
                 }
                 else
                 {
-                    algochain.transfer(src_user, dest, cum_sum);
+                    algochain.transfer(src_user, dest, cum_sum, _use_cout_flag, _out_file);
                 }
             }
         }
-
+        /**--------------------------MINE--------------------------**/
         else if (user_command == COMMAND_MINE)
             if (algochain.isEmpty())
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
@@ -303,10 +317,10 @@ void algochainStart(string &input_file, string &output_file)
                     cout << "There are no Txns to mine" << endl;
                 else
                 {
-                    algochain.mine(bits);
+                    algochain.mine(bits, _use_cout_flag, _out_file);
                 }
             }
-
+        /**--------------------------BALANCE--------------------------**/
         else if (user_command == COMMAND_BALANCE)
             if (algochain.isEmpty())
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
@@ -314,9 +328,12 @@ void algochainStart(string &input_file, string &output_file)
             {
                 string user_name = _command_balance(user_input);
                 float userBalance = algochain.getBalance().getUserBalance(user_name);
-                cout << userBalance << endl;
+                if(_use_cout_flag)
+                    cout << userBalance << endl;
+                else
+                    _out_file << userBalance << endl;
             }
-
+        /**--------------------------BLOCK--------------------------**/
         else if (user_command == COMMAND_BLOCK)
             if (algochain.isEmpty())
                 cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
@@ -333,9 +350,13 @@ void algochainStart(string &input_file, string &output_file)
                     if (block == nullptr)
                         cout << "FAIL" << endl;
                     else
-                        cout << block->cat() << endl;
+                        if(_use_cout_flag)
+                            cout << block->cat() << endl;
+                        else
+                            _out_file << block->cat() << endl;
                 }
             }
+        /**--------------------------TXN--------------------------**/
         else if (user_command == COMMAND_TXN)
             if (algochain.isEmpty())
                 cout
@@ -349,10 +370,13 @@ void algochainStart(string &input_file, string &output_file)
 
                 else
                 {
-                    cout << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
+                    if(_use_cout_flag)
+                        cout << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
+                    else
+                        _out_file << algochain.getTxnsMemo().getData().at(txn_hash)->cat() << endl;
                 }
             }
-
+        /**--------------------------LOAD--------------------------**/
         else if (user_command == COMMAND_LOAD)
         {
 
@@ -365,11 +389,10 @@ void algochainStart(string &input_file, string &output_file)
                 algochain.load(file_name);
             }
         }
-
+        /**--------------------------SAVE--------------------------**/
         else if (user_command == COMMAND_SAVE)
             if (algochain.isEmpty())
-                cout
-                    << MSG_INIT_ALGOCHAIN_FIRST << endl;
+                cout << MSG_INIT_ALGOCHAIN_FIRST << endl;
             else
             {
 
@@ -388,7 +411,7 @@ void algochainStart(string &input_file, string &output_file)
                     ofs.close();
                 }
             }
-
+        /**--------------------------HELP--------------------------**/
         else if (user_command == COMMAND_HELP)
             cout
                 << COMMAND_REPLY_TO_HELP << endl;

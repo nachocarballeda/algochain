@@ -104,6 +104,6 @@ private:
     Mempool _mempool;
 };
 
-void algochainStart(void);
+void algochainStart(string &input_file, string &output_file);
 
 #endif

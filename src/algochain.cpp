@@ -100,9 +100,7 @@ void Algochain::transfer(const string &src_user, const unordered_map<string, flo
 {
     size_t dest_count = 1; // arrango en 1 para contemplar el output del src user
     string tx_id = _utxos.getUserUtxoHash(src_user);
-    // cout << tx_id << endl;
     int idx = _utxos.findUtxoIdx(src_user);
-    // cout << idx << endl;
     string addr = sha256(src_user);
 
     if (tx_id == "")
@@ -140,7 +138,6 @@ void Algochain::transfer(const string &src_user, const unordered_map<string, flo
         }
 
         _balance = newBalance;
-        //_mempool.setNewBalance(mempoolBalance);
         _mempool.addTxn(new_txn);
         cout << sha256(new_txn.cat()) << endl;
     }
@@ -150,7 +147,6 @@ void Algochain ::mine(const size_t &bits)
 {
     Body newBody(_mempool.getNewTxns());
     Header newHeader(bits);
-    //_balance = _mempool.getNewBalance();
     Block newBlock(newHeader, newBody);
     newBlock.updateTxnsHash();
     Header newBlockHeaderWithTxnsHash = newBlock.getHeader();
@@ -168,27 +164,6 @@ void Algochain ::mine(const size_t &bits)
     _mempool.clear();
     cout << sha256(newBlock.cat()) << endl;
 }
-
-// void Algochain ::addBlock(Block &_b)
-// {
-//     BlockNode *_aux1, *_aux2;
-//     _aux1 = new BlockNode(_b);
-//     _aux1->_data = _b;
-//     _aux1->_next = 0;
-//     if (isEmpty())
-//     {
-//         _first = _aux1;
-//         _first->_ant = 0;
-//     }
-//     else
-//     {
-//         _aux2 = _first;
-//         while (_aux2->_next)
-//             _aux2 = _aux2->_next;
-//         _aux2->_next = _aux1;
-//         _aux1->_ant = _aux2;
-//     }
-// }
 
 BlockNode *Algochain ::addBlock(Block _b)
 {
@@ -254,7 +229,7 @@ bool Algochain ::isEmpty() const
     return (_first == 0);
 }
 
-void algochainStart(void)
+void algochainStart(string &input_file, string &output_file)
 {
     istringstream user_input;
     string user_command;
@@ -264,12 +239,27 @@ void algochainStart(void)
     string user_name;
     float value;
     size_t bits;
+    ifstream file(input_file);
+    bool _stop_flag = false;
+    bool _use_cin_flag = (input_file == "-");
 
-    while (true)
+    while (_stop_flag==false)
     {
-        getline(cin, user_complete_line);
+        if(_use_cin_flag)
+        {
+            getline(cin, user_complete_line);
+        } 
+        else if (!_use_cin_flag)
+        {
+            if(!getline(file, user_complete_line))
+            {
+                _stop_flag = true;
+            }
+        }
+        
         istringstream user_input(user_complete_line);
         user_input >> user_command;
+        
         if (user_command == COMMAND_INIT)
         {
             tie(user_name, value, bits) = _command_init(user_input);

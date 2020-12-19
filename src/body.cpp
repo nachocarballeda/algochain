@@ -3,6 +3,9 @@
 #include "../include/algovector.h"
 
 #include <iostream>
+#include <cmath>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -44,11 +47,11 @@ string Body::cat()
         concatTxns.append("\n");
         for (size_t j = 0; j < _txns[i].getNTxIn(); ++j)
         {
-            concatTxns.append((_txns[i].getInputs())[j].getAddr());
+            concatTxns.append((_txns[i].getInputs())[j].getOutpointTxId());
             concatTxns.append(" ");
             concatTxns.append(to_string((_txns[i].getInputs())[j].getOutpointIdx()));
             concatTxns.append(" ");
-            concatTxns.append((_txns[i].getInputs())[j].getOutpointTxId());
+            concatTxns.append((_txns[i].getInputs())[j].getAddr());
             concatTxns.append("\n");
         }
         concatTxns.append(to_string(_txns[i].getNTxOut()));
@@ -56,7 +59,17 @@ string Body::cat()
 
         for (size_t j = 0; j < _txns[i].getNTxOut(); ++j)
         {
-            concatTxns.append(to_string((_txns[i].getOutputs())[j].getValue()));
+            std::stringstream s;
+            double _integral_part;
+            double _fract_part;
+            double _original_value;
+            _original_value = (_txns[i].getOutputs())[j].getValue();
+            _fract_part = modf(_original_value, &_integral_part);
+            if( _fract_part == 0)
+                s << std::fixed << std::setprecision(0) << _integral_part;
+            else
+                s << std::fixed << std::setprecision(1) << _original_value;
+            concatTxns.append(s.str());
             concatTxns.append(" ");
             concatTxns.append((_txns[i].getOutputs())[j].getAddr());
             if (j != _txns[i].getNTxOut() - 1)

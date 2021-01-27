@@ -39,7 +39,6 @@ Block::Block(string filepath)
 bool Block::loadTxn(const string filepath)
 {
     ifstream txns_file(filepath);
-    Txn newTxn;
     if (!txns_file.good())
     {
         showError(MSG_ERROR_INVALID_FILEPATH);
@@ -48,6 +47,7 @@ bool Block::loadTxn(const string filepath)
 
     while (!txns_file.eof())
     {
+        Txn newTxn;
         string line;
         int n_tx_in = 0;
         int n_tx_out = 0;
@@ -63,7 +63,6 @@ bool Block::loadTxn(const string filepath)
             showError(MSG_ERROR_INVALID_N_TX_IN);
             return false;
         }
-
         for (int i = 0; i < n_tx_in; ++i)
         {
             getline(txns_file, line);
@@ -96,9 +95,8 @@ bool Block::loadTxn(const string filepath)
         getline(txns_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
-        
-        /*        
-        cout << "N_TX_OUT: " << n_tx_out << " N_TX_IN: " << n_tx_in << endl;
+
+        /*
         if (n_tx_out > n_tx_in || outputStream.fail())
         {
             showError(MSG_ERROR_INVALID_N_TX_OUT);

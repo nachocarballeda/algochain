@@ -20,7 +20,7 @@
 #include "../include/blocks_memo.h"
 
 #define MSG_INIT_ALGOCHAIN_FIRST "Please init the Algochain first"
-#define GENESIS_BLOCK_HASH "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+#define GENESIS_BLOCK_HASH "0000000000000000000000000000000000000000000000000000000000000000"
 
 #define COMMAND_INIT "init"
 #define COMMAND_BALANCE "balance"

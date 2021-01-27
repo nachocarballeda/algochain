@@ -17,7 +17,6 @@
 #include "include/arghandler.h"
 
 option_t options[] = {
-    {1, "d", "difficulty", "1", opt_set_difficulty, OPT_DEFAULT},
     {1, "o", "output", "-", opt_set_output, OPT_DEFAULT},
     {1, "i", "input", "-", opt_set_input, OPT_DEFAULT},
     {
@@ -30,10 +29,9 @@ int main(int argc, char *argv[])
 {
     string _input_file;
     string _output_file;
-    size_t _difficulty;
 
     cmdline cmdl(options);
     cmdl.parse(argc, argv);
-    tie(_input_file, _output_file, _difficulty) = opt_get_values();
+    tie(_input_file, _output_file) = opt_get_values();
     algochainStart(_input_file, _output_file);
 }

@@ -17,7 +17,7 @@
 #include "include/arghandler.h"
 
 option_t options[] = {
-    {1, "d", "difficulty", "1", opt_set_difficulty, OPT_MANDATORY},
+    {1, "d", "difficulty", "1", opt_set_difficulty, OPT_DEFAULT},
     {1, "o", "output", "-", opt_set_output, OPT_DEFAULT},
     {1, "i", "input", "-", opt_set_input, OPT_DEFAULT},
     {

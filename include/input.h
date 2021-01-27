@@ -6,6 +6,7 @@
 
 #include "../include/algovector.h"
 #include "../include/outpoint.h"
+#include "../include/algovector.h"
 
 using namespace std;
 

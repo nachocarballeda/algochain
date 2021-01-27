@@ -10,6 +10,7 @@ using namespace std;
 #define MSG_ERROR_INVALID_FILEPATH "Invalid filepath"
 #define MSG_ERROR_WRITING_TO_FILE "Couldn't write to file"
 #define MSG_ERROR_INVALID_N_TX_IN "Invalid number of transaction inputs"
+#define MSG_ERROR_INVALID_LINE_LENGTH "Invalid line length"
 #define MSG_ERROR_INVALID_TX_ID "Invalid transaction ID"
 #define MSG_ERROR_INVALID_IDX "Invalid IDx"
 #define MSG_ERROR_INVALID_ADDR "Invalid address"

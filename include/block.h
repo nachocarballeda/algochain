@@ -16,6 +16,7 @@ class Block
 private:
     Header _header;
     Body _body;
+    bool _transaction_error;
 
 public:
     Block();
@@ -27,9 +28,11 @@ public:
     const Header &getHeader() const;
     const Body &getBody() const;
     const string cat() const;
+    const bool getTxnError() const;
 
     void setHeader(const Header &);
     void setBody(const Body &);
+    void setTxnError(bool err);
     void setDifficulty(const size_t &);
     void updateTxnsHash();
     void load(ifstream &);

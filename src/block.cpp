@@ -44,6 +44,7 @@ void Block::load(ifstream &algochain_file)
 
     while (!algochain_file.eof())
     {
+        Txn newTxn;
         string line;
         int n_tx_in = 0;
         int n_tx_out = 0;
@@ -57,7 +58,6 @@ void Block::load(ifstream &algochain_file)
             showError(MSG_ERROR_INVALID_N_TX_IN);
             return;
         }
-
         for (int i = 0; i < n_tx_in; ++i)
         {
             getline(algochain_file, line);
@@ -90,17 +90,21 @@ void Block::load(ifstream &algochain_file)
         getline(algochain_file, line);
         istringstream outputStream(line);
         outputStream >> n_tx_out;
+
+        /*
         if (n_tx_out > n_tx_in || outputStream.fail())
         {
             showError(MSG_ERROR_INVALID_N_TX_OUT);
-            return;
+            return false;
         }
+        */
+
         for (int i = 0; i < n_tx_out; ++i)
         {
 
             getline(algochain_file, line);
             istringstream output_data(line);
-            float value;
+            double value;
             string addr;
             output_data >> value;
             if (value < 0 || output_data.fail())
@@ -133,6 +137,7 @@ void Block::writeToFile(string filepath)
             return;
         }
         block_file << _header.cat()
+                   << _body.getTxnCount() << "\n"
                    << _body.cat();
 
         if (!block_file.good())
@@ -145,6 +150,7 @@ void Block::writeToFile(string filepath)
     else
     {
         cout << _header.cat()
+             << _body.getTxnCount() << "\n"
              << _body.cat();
     }
 }
@@ -152,6 +158,11 @@ void Block::writeToFile(string filepath)
 void Block::setHeader(const Header &h)
 {
     _header = h;
+}
+
+void Block::setTxnError(bool err)
+{
+    _transaction_error = err;
 }
 
 void Block::setBody(const Body &b)
@@ -172,6 +183,11 @@ Header const &Block::getHeader() const
 const Body &Block::getBody() const
 {
     return _body;
+}
+
+const bool Block::getTxnError() const
+{
+    return _transaction_error;
 }
 
 void Block::updateTxnsHash()
@@ -213,7 +229,7 @@ void Block::proofOfWork()
             /*
                 Pruebo que cada bit sea 0. El bit c[0] = LSb y c[3] = MSb
             */
-            for (; i < 4; i++)
+            for ( ;i < 4; i++)
             {
                 if (c[3 - i] != 0)
                     break;

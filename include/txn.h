@@ -8,6 +8,7 @@
 #include "../include/input.h"
 #include "../include/outpoint.h"
 #include "../include/sha256.h"
+#include "../include/algovector.h"
 
 using namespace std;
 
